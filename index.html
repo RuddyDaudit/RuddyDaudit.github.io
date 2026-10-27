@@ -1,0 +1,1612 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruddy Daudit · Développeur Java / Spring Boot &amp; Angular</title>
+<meta name="description" content="Portfolio de Ruddy Daudit, développeur Java / Spring Boot et Angular : projets, parcours et CV.">
+<meta property="og:title" content="Ruddy Daudit · Développeur Java / Spring Boot &amp; Angular">
+<meta property="og:description" content="Je conçois des applications web fiables, testées et sécurisées, du backend à l'interface.">
+<meta property="og:image" content="https://ruddydaudit.github.io/img/ruddy.jpg">
+<meta property="og:url" content="https://ruddydaudit.github.io/">
+<meta property="og:type" content="website">
+<link rel="icon" href="img/ruddy.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
+/* Layout: one reading column (max 1120px), hash-routed views; every project page carries its own accent (--acc) */
+:root {
+  --bg: #F3F4F1; --surface: #FFFFFF; --ink: #15191C; --muted: #5B6467; --line: #D9DDDA;
+  --ok: #1B7A3E; --bad: #B3261E; --warn: #9A6200;
+  --code-bg: #15191C; --code-fg: #E6EAE8; --code-dim: #8C9693; --code-line: #2E3739;
+  --fin: #0D6B63; --fin-soft: #DCEDEA;
+  --doc: #2D5B8C; --doc-soft: #DFE8F2;
+  --lib: #8A5A12; --lib-soft: #F3E8D6;
+  --chain: #B4501A; --chain-soft: #F6E4D8;
+  --bomb: #2F7A33; --bomb-soft: #DFEEDD;
+  --pizza: #B93A22; --pizza-soft: #F6E3DD;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111416; --surface: #1A1F21; --ink: #ECEFED; --muted: #9AA4A1; --line: #2C3436;
+    --ok: #5BCB82; --bad: #FF8A80; --warn: #E9B44C;
+    --code-bg: #0A0C0D; --code-fg: #E6EAE8; --code-dim: #7D8885; --code-line: #262E30;
+    --fin: #4FC2B5; --fin-soft: #163432; --doc: #7FB0E6; --doc-soft: #1A2836;
+    --lib: #DDAA5C; --lib-soft: #33291A; --chain: #F08A52; --chain-soft: #3A2419;
+    --bomb: #7BD37F; --bomb-soft: #1C301D; --pizza: #F07A5E; --pizza-soft: #3A211B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111416; --surface: #1A1F21; --ink: #ECEFED; --muted: #9AA4A1; --line: #2C3436;
+  --ok: #5BCB82; --bad: #FF8A80; --warn: #E9B44C;
+  --code-bg: #0A0C0D; --code-fg: #E6EAE8; --code-dim: #7D8885; --code-line: #262E30;
+  --fin: #4FC2B5; --fin-soft: #163432; --doc: #7FB0E6; --doc-soft: #1A2836;
+  --lib: #DDAA5C; --lib-soft: #33291A; --chain: #F08A52; --chain-soft: #3A2419;
+  --bomb: #7BD37F; --bomb-soft: #1C301D; --pizza: #F07A5E; --pizza-soft: #3A211B;
+  color-scheme: dark;
+}
+.a-fin { --acc: var(--fin); --acc-soft: var(--fin-soft); }
+.a-doc { --acc: var(--doc); --acc-soft: var(--doc-soft); }
+.a-lib { --acc: var(--lib); --acc-soft: var(--lib-soft); }
+.a-chain { --acc: var(--chain); --acc-soft: var(--chain-soft); }
+.a-bomb { --acc: var(--bomb); --acc-soft: var(--bomb-soft); }
+.a-pizza { --acc: var(--pizza); --acc-soft: var(--pizza-soft); }
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1120px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.1; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--acc, var(--fin)); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: var(--f-mono); }
+.label { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.label.acc { color: var(--acc); }
+
+/* top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 22px; border-bottom: 1px solid var(--line); }
+.brand { font-family: var(--f-display); font-weight: 700; font-size: 18px; text-decoration: none; white-space: nowrap; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a { font-size: 14px; text-decoration: none; padding: 6px 12px; border-radius: 999px; color: var(--muted); }
+.nav a:hover { color: var(--ink); background: var(--surface); }
+@media (max-width: 480px) { .top { flex-wrap: wrap; } .nav a { padding: 6px 9px; } }
+
+section.view { padding-block: 56px 80px; }
+
+/* buttons */
+.btn-ghost { font: inherit; font-size: 13px; background: none; border: 1px solid var(--line); color: var(--ink); padding: 6px 10px; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn { font: inherit; font-weight: 600; font-size: 14px; padding: 9px 16px; border-radius: 8px; border: 0; background: var(--acc); color: var(--surface); cursor: pointer; }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.sec { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.sec:hover { box-shadow: inset 0 0 0 1px var(--ink); }
+.btn.danger { background: var(--bad); }
+.repo { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font-weight: 600; font-size: 15px; text-decoration: none; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
+.repo:hover { border-color: var(--acc); color: var(--acc); }
+
+/* ---------- HOME ---------- */
+/* Banner: same deep blue in both themes, echoing the portrait's studio backdrop */
+.banner {
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 36px; align-items: center;
+  padding: 36px 40px; border-radius: 18px; color: #F2F5F8;
+  background-color: #14315A;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(120deg, #1B3F73 0%, #122A4D 60%, #0E2240 100%);
+  background-size: 18px 18px, 100% 100%;
+}
+.banner .portrait { margin: 0; width: 200px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 4px solid rgba(255,255,255,.9); background: #2B5694; }
+.banner .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner-text { display: grid; gap: 12px; min-width: 0; }
+.banner .who { font-family: var(--f-mono); font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: #A9C0E0; }
+.banner h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -0.02em; color: #FFFFFF; }
+.banner .tagline { font-size: 19px; color: #D3DEEC; max-width: 52ch; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.badges > span { font-size: 13px; padding: 4px 11px; border-radius: 999px; background: rgba(255,255,255,.1); color: #E6EDF6; border: 1px solid rgba(255,255,255,.18); }
+.badges .avail { display: inline-flex; align-items: center; gap: 7px; font-weight: 500; }
+.badges .avail::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #5BD08A; }
+@media (max-width: 760px) {
+  .banner { grid-template-columns: 1fr; gap: 20px; padding: 26px 22px; }
+  .banner .portrait { width: 120px; }
+}
+.banner-foot { display: grid; gap: 22px; margin-top: 22px; }
+.pitch { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 760px) { .pitch { grid-template-columns: 1fr; gap: 16px; } }
+.pitch > div { display: grid; gap: 6px; align-content: start; padding-top: 14px; border-top: 1px solid var(--line); }
+.pitch p { font-size: 15px; color: var(--muted); }
+.contact { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+.contact .mono { background: var(--surface); border: 1px solid var(--line); padding: 6px 10px; border-radius: 6px; user-select: all; }
+.avail { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+.avail::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+
+.home-block { margin-top: 72px; display: grid; gap: 20px; }
+.home-block > h2 { font-size: 30px; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 960px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .cards { grid-template-columns: 1fr; } }
+.pcard { display: grid; grid-template-rows: auto 1fr; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; transition: transform .2s ease, border-color .2s ease; }
+.pcard:hover { transform: translateY(-3px); border-color: var(--acc); }
+.pcard .vis { height: 170px; position: relative; overflow: hidden; display: grid; place-items: center; padding: 16px; }
+.pcard .body { padding: 18px 20px 20px; display: grid; gap: 10px; align-content: start; }
+.pcard h3 { font-size: 22px; }
+.pcard p { color: var(--muted); font-size: 15px; }
+.pcard .go { font-weight: 600; font-size: 14px; color: var(--acc); }
+.pcard .yr { position: absolute; right: 10px; top: 10px; font-family: var(--f-mono); font-size: 11px; background: rgba(0,0,0,.6); color: #fff; padding: 2px 7px; border-radius: 4px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-family: var(--f-mono); font-size: 12px; padding: 2px 8px; border-radius: 4px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+
+/* card visuals */
+.v-dark { background: var(--code-bg); color: var(--code-fg); }
+.mini-flow { display: flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: 11px; }
+.mini-flow .node { border: 1px solid #3A4446; border-radius: 7px; padding: 8px 7px; text-align: center; background: #1E2427; color: #E6EAE8; }
+.mini-flow .node i { display: block; font-style: normal; color: #8C9693; font-size: 10px; }
+.mini-flow .arr { color: #4FC2B5; }
+.v-soft { background: var(--acc-soft); }
+.mini-status { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; font-family: var(--f-mono); font-size: 11px; color: var(--acc); max-width: 260px; }
+.mini-status span.p { border: 1px solid var(--acc); border-radius: 999px; padding: 3px 8px; background: var(--surface); }
+.mini-status span.p.on { background: var(--acc); color: var(--surface); }
+.spines { display: flex; align-items: flex-end; gap: 5px; height: 120px; }
+.spines i { display: block; width: 22px; border-radius: 3px 3px 0 0; background: var(--acc); }
+.spines i:nth-child(2n) { opacity: .7; } .spines i:nth-child(3n) { opacity: .45; }
+.mini-chain { display: flex; align-items: center; gap: 4px; font-family: var(--f-mono); font-size: 10px; }
+.mini-chain .b { border: 1px solid var(--acc); background: var(--surface); border-radius: 6px; padding: 6px 7px; line-height: 1.35; color: var(--ink); }
+.mini-chain .b em { font-style: normal; color: var(--acc); }
+.mini-chain .l { color: var(--acc); }
+.mini-map { margin: 0; font-family: var(--f-mono); font-size: 12px; line-height: 1.15; color: #7BD37F; white-space: pre; }
+.mini-map b { color: #FF6B5B; font-weight: 500; } .mini-map u { text-decoration: none; color: #F2C77E; }
+.v-photo { padding: 0 !important; }
+.v-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* parcours */
+.cv { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+@media (max-width: 760px) { .cv { grid-template-columns: 1fr; } }
+.cv-col { display: grid; gap: 4px; align-content: start; }
+.cv-col > .label { margin-bottom: 8px; }
+.cv-item { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px; padding-block: 12px; border-top: 1px solid var(--line); }
+.cv-item .when { font-family: var(--f-mono); font-size: 12px; color: var(--muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.cv-item b { font-weight: 600; }
+.cv-item p { color: var(--muted); font-size: 15px; }
+@media (max-width: 420px) { .cv-item { grid-template-columns: 1fr; gap: 2px; } }
+.skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .skills { grid-template-columns: 1fr; } }
+.skill { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.skill h3 { font-size: 17px; }
+
+/* ---------- PROJECT PAGES ---------- */
+.back { display: inline-flex; gap: 6px; font-size: 14px; color: var(--muted); text-decoration: none; margin-bottom: 28px; }
+.back:hover { color: var(--acc); }
+.phead { display: grid; gap: 16px; max-width: 800px; }
+.phead h1 { font-size: clamp(36px, 6vw, 58px); font-weight: 800; letter-spacing: -0.02em; }
+.phead .lede { font-size: 19px; color: var(--muted); }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.facts > div { padding: 16px 16px 16px 0; display: grid; gap: 4px; min-width: 0; }
+.facts > div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+.facts .v { font-weight: 600; }
+@media (max-width: 760px) {
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts > div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .facts > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+.block { margin-top: 64px; display: grid; gap: 20px; }
+.block > h2 { font-size: 28px; }
+.block > p.sub { color: var(--muted); max-width: 68ch; margin-top: -8px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+.prose { display: grid; gap: 14px; max-width: 68ch; }
+.prose ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.prose strong { font-weight: 600; }
+code.inl { font-family: var(--f-mono); font-size: .88em; background: var(--surface); border: 1px solid var(--line); padding: 1px 5px; border-radius: 4px; }
+pre.code { margin: 0; background: var(--code-bg); color: var(--code-fg); border-radius: 10px; padding: 18px 20px; overflow-x: auto; font-family: var(--f-mono); font-size: 13px; line-height: 1.65; }
+pre.code .c { color: var(--code-dim); }
+pre.code .k { color: #7FD6CB; }
+pre.code .s { color: #F2C77E; }
+pre.code .ok { color: #5BCB82; }
+pre.code .bad { color: #FF8A80; }
+.codecap { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 18px; min-width: 0; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 13px; color: var(--muted); }
+.field input, .field select { font: inherit; font-size: 15px; width: 100%; padding: 8px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.pill { display: inline-block; font-family: var(--f-mono); font-size: 12px; font-weight: 500; padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.ok { color: var(--ok); } .pill.bad { color: var(--bad); } .pill.pend { color: var(--muted); } .pill.warn { color: var(--warn); } .pill.acc { color: var(--acc); }
+.next-proj { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.next-proj a { text-decoration: none; font-weight: 600; }
+.next-proj a:hover { color: var(--acc); }
+.note { font-size: 14px; color: var(--muted); }
+
+/* FinCore */
+.arch { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; overflow-x: auto; }
+.arch-inner { min-width: 700px; display: grid; gap: 14px; }
+.cluster { border: 1.5px dashed var(--acc); border-radius: 12px; padding: 34px 18px 18px; position: relative; }
+.cluster .cl { position: absolute; top: 10px; left: 16px; font-family: var(--f-mono); font-size: 12px; color: var(--acc); }
+.svc-row { display: grid; grid-template-columns: 1fr 48px 1fr 48px 1fr; align-items: center; }
+.svc { border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 14px; display: grid; gap: 4px; transition: border-color .25s, background .25s, box-shadow .25s, opacity .25s; }
+.svc .n { font-weight: 600; }
+.svc .m { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.svc.on { border-color: var(--acc); background: var(--acc-soft); box-shadow: 0 0 0 3px var(--acc-soft); }
+.svc.off { opacity: .4; }
+.link { height: 2px; background: var(--line); position: relative; transition: background .25s; }
+.link::after { content: ""; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left: 7px solid var(--line); border-right: 0; transition: border-color .25s; }
+.link.on { background: var(--acc); } .link.on::after { border-left-color: var(--acc); }
+.client { display: flex; align-items: center; gap: 12px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.client .box { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; background: var(--bg); color: var(--ink); }
+.iac { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.iac span { border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.presets button { font: inherit; font-family: var(--f-mono); font-size: 12px; padding: 5px 9px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 6px; cursor: pointer; }
+.presets button:hover { color: var(--ink); border-color: var(--ink); }
+.log { min-height: 150px; }
+
+/* Outillage workflow */
+.wf { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; overflow-x: auto; }
+.wf-step { position: relative; padding: 12px 8px 0; text-align: center; font-size: 13px; color: var(--muted); border-top: 3px solid var(--line); min-width: 92px; }
+.wf-step.done { border-top-color: var(--acc); color: var(--ink); }
+.wf-step.cur { border-top-color: var(--acc); color: var(--acc); font-weight: 600; }
+.wf-step .code { display: block; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.doc-card { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.doc-ico { width: 52px; height: 64px; border-radius: 4px 14px 4px 4px; background: var(--acc-soft); border: 1px solid var(--acc); display: grid; place-items: center; font-family: var(--f-mono); font-size: 11px; color: var(--acc); }
+.doc-card .t { font-weight: 600; }
+.doc-card .m { font-size: 13px; color: var(--muted); }
+@media (max-width: 520px) { .doc-card { grid-template-columns: 52px minmax(0, 1fr); } .doc-card > .pill { grid-column: 2; justify-self: start; } }
+.hist { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+.hist th { text-align: left; font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.hist td { padding: 8px 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.scroll-x { overflow-x: auto; }
+.types { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* Librairie */
+.books { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 680px; }
+.books th { text-align: left; font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 10px; border-bottom: 1px solid var(--line); }
+.books td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.books td.num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.cover { width: 38px; height: 54px; border-radius: 2px 5px 5px 2px; display: grid; place-items: center; font-family: var(--f-display); font-weight: 700; font-size: 13px; color: #fff; box-shadow: inset 4px 0 0 rgba(0,0,0,.18); }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.acts button { font: inherit; font-size: 13px; padding: 4px 9px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.acts button:hover { border-color: var(--ink); }
+.acts button.del { color: var(--bad); }
+.acts button.del:hover { border-color: var(--bad); }
+.bookform { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .bookform { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 440px) { .bookform { grid-template-columns: 1fr; } }
+.bookform .span2 { grid-column: span 2; }
+@media (max-width: 440px) { .bookform .span2 { grid-column: auto; } }
+.layers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 760px) { .layers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.layer { border: 1px solid var(--line); border-top: 3px solid var(--acc); background: var(--surface); border-radius: 0 0 10px 10px; padding: 14px; display: grid; gap: 6px; align-content: start; }
+.layer b { font-weight: 600; }
+.layer span { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+
+/* Blockchain */
+.chain { display: flex; gap: 0; align-items: stretch; overflow-x: auto; padding-bottom: 6px; }
+.blk { flex: 0 0 210px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); padding: 12px; display: grid; gap: 8px; font-size: 13px; transition: border-color .2s, background .2s; }
+.blk.bad { border-color: var(--bad); }
+.blk.ok { border-color: var(--ok); }
+.blk .hdr { display: flex; justify-content: space-between; align-items: center; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.blk label { font-size: 12px; color: var(--muted); display: block; }
+.blk input { font: inherit; font-family: var(--f-mono); width: 100%; padding: 6px 9px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.blk .h { font-family: var(--f-mono); font-size: 11px; word-break: break-all; line-height: 1.4; }
+.blk .h.mis { color: var(--bad); }
+.blk-link { flex: 0 0 34px; display: grid; place-items: center; color: var(--ok); font-family: var(--f-mono); font-size: 18px; }
+.blk-link.bad { color: var(--bad); }
+.slides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .slides { grid-template-columns: 1fr; } }
+.slides figure { margin: 0; display: grid; gap: 8px; }
+.slides img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
+.slides figcaption { font-size: 14px; color: var(--muted); }
+.verdict { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 620px) { .verdict { grid-template-columns: 1fr; } }
+.verdict > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 10px; align-content: start; }
+.verdict ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+
+/* Bomberman */
+.game { position: relative; background: #0B0E0C; border-radius: 12px; padding: 18px; overflow-x: auto; outline: none; color: #CFE8CF; }
+.game:focus-visible { box-shadow: 0 0 0 3px var(--acc); }
+.grid { font-family: var(--f-mono); font-size: 15px; line-height: 1.25; white-space: pre; margin: 0; width: max-content; }
+.grid span { display: inline-block; width: 1ch; text-align: center; }
+.c-wall0 { color: #4C5A4E; background: #1B221D; }
+.c-wall { color: #E2C26B; }
+.c-p1 { color: #0B0E0C; background: #6FB8FF; font-weight: 600; }
+.c-p2 { color: #0B0E0C; background: #FF9E6B; font-weight: 600; }
+.c-bomb { color: #FF5A4A; font-weight: 600; }
+.c-x { color: #FFE066; background: #5A1E10; }
+.c-bonus { color: #7BD37F; font-weight: 600; }
+.gstatus { margin-top: 10px; font-family: var(--f-mono); font-size: 13px; color: #CFE8CF; display: flex; gap: 28px; flex-wrap: wrap; }
+.overlay { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(11,14,12,.82); border-radius: 12px; text-align: center; padding: 16px; }
+.overlay .in { display: grid; gap: 12px; justify-items: center; font-family: var(--f-mono); font-size: 14px; color: #E6EAE8; max-width: 440px; }
+.overlay .in b { font-size: 18px; font-family: var(--f-display); }
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 620px) { .keys { grid-template-columns: 1fr; } }
+.keys > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; }
+kbd { font-family: var(--f-mono); font-size: 12px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; background: var(--bg); }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.legend code { font-family: var(--f-mono); font-weight: 600; color: var(--ink); }
+.modes { display: flex; gap: 8px; flex-wrap: wrap; }
+.modes button[aria-pressed="true"] { background: var(--acc); color: var(--surface); box-shadow: none; }
+
+/* Pizzeria */
+.hero-photo { margin: 40px 0 0; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 7; max-width: 100%; position: relative; background: var(--acc-soft); }
+@media (max-width: 480px) { .hero-photo { aspect-ratio: 4 / 3; } }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-photo figcaption { position: absolute; left: 16px; bottom: 14px; font-family: var(--f-mono); font-size: 12px; color: #fff; background: rgba(0,0,0,.55); padding: 4px 10px; border-radius: 4px; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.gallery figure { margin: 0; display: grid; gap: 8px; }
+.gallery img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 10px; display: block; }
+.gallery figcaption { font-size: 14px; color: var(--muted); }
+.roles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .roles { grid-template-columns: 1fr; } }
+.role { border-top: 3px solid var(--acc); background: var(--surface); padding: 18px; border-radius: 0 0 10px 10px; display: grid; gap: 10px; align-content: start; }
+.role h3 { font-size: 20px; }
+.role ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); font-size: 15px; }
+.menu { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.menu table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 300px; }
+.menu th { text-align: left; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.menu td { padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.menu tr:last-child td { border-bottom: 0; }
+.menu .num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--f-mono); }
+.erd-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+.erd { display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 12px; min-width: 820px; }
+.tbl { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-family: var(--f-mono); font-size: 12px; background: var(--bg); }
+.tbl .h { background: var(--acc-soft); color: var(--acc); padding: 8px 10px; font-weight: 500; }
+.tbl div.r { padding: 5px 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; }
+.tbl div.r em { font-style: normal; color: var(--muted); }
+.statuses { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--f-mono); font-size: 13px; }
+.statuses .st { border: 1px solid var(--acc); color: var(--acc); padding: 4px 10px; border-radius: 999px; }
+.statuses .ar { color: var(--muted); }
+.retro { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+.retro ul { margin: 0; padding-left: 20px; display: grid; gap: 10px; }
+
+footer.site { border-top: 1px solid var(--line); padding-block: 26px 40px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.flinks { display: flex; gap: 16px; flex-wrap: wrap; }
+.flinks a { color: var(--muted); } .flinks a:hover { color: var(--ink); }
+
+/* ---------- CV sheet ---------- */
+.cv-sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; max-width: 960px; margin: 0 auto; font-size: 15px; line-height: 1.5; }
+.cvhead { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 26px; align-items: center; padding: 28px 34px; color: #F2F5F8;
+  background-color: #14315A;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(120deg, #1B3F73 0%, #122A4D 60%, #0E2240 100%);
+  background-size: 18px 18px, 100% 100%; }
+.cvphoto { margin: 0; width: 112px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 3px solid rgba(255,255,255,.9); background: #2B5694; }
+.cvphoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cvhead-text { display: grid; gap: 6px; min-width: 0; }
+.cvhead .who { font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #A9C0E0; }
+.cvhead h1 { font-size: clamp(24px, 3.4vw, 34px); font-weight: 800; letter-spacing: -0.015em; color: #FFFFFF; }
+.cvhead p { color: #D3DEEC; font-size: 15px; }
+.cvbody { display: grid; grid-template-columns: 270px minmax(0, 1fr); }
+.cvside { background: var(--bg); padding: 26px 24px; display: grid; gap: 22px; align-content: start; border-right: 1px solid var(--line); }
+.cvmain { padding: 26px 32px; display: grid; gap: 22px; align-content: start; min-width: 0; }
+.cv-sheet h2 { font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--doc); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.cv-sheet section > p { color: var(--ink); }
+.cvlist { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.cvlist.plain { list-style: none; padding-left: 0; gap: 6px; font-size: 14px; }
+.cvlist.plain a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.cvlist.plain .mono { font-size: 13px; }
+.cvavail { margin-top: 10px; display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--ok); }
+.cvavail::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.cvskill { display: grid; gap: 2px; font-size: 14px; margin-bottom: 9px; }
+.cvskill b { font-weight: 600; }
+.cvskill span { color: var(--muted); }
+.cvjob { display: grid; gap: 4px; margin-bottom: 12px; }
+.cvjob-h { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.cvjob-h b { font-weight: 600; }
+.cvjob-h span { font-family: var(--f-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.cvjob .cvlist { font-size: 14px; color: var(--muted); }
+.cvmore { font-size: 14px; color: var(--muted); }
+.cvedu { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; font-size: 14px; margin-bottom: 7px; }
+.cvedu > span { font-family: var(--f-mono); font-size: 12px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.cvedu b { font-weight: 600; }
+.cvedu em { display: block; font-style: normal; color: var(--muted); font-size: 13px; }
+@media (max-width: 760px) {
+  .cvhead { grid-template-columns: 1fr; padding: 24px 22px; gap: 16px; }
+  .cvphoto { width: 88px; }
+  .cvbody { grid-template-columns: 1fr; }
+  .cvside { border-right: 0; border-bottom: 1px solid var(--line); padding: 22px; }
+  .cvmain { padding: 22px; }
+}
+.cv-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; max-width: 960px; margin: 0 auto 20px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#home">Ruddy Daudit</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#home">Accueil</a>
+      <a href="#cv">CV</a>
+      <a href="https://github.com/RuddyDaudit" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/ruddy-daudit-13246424b/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </header>
+
+  <!-- ================= HOME ================= -->
+  <section class="view a-fin" id="home" data-view="home">
+    <div class="banner">
+      <figure class="portrait"><img src="img/ruddy.jpg" alt="Portrait de Ruddy Daudit"></figure>
+      <div class="banner-text">
+        <span class="who">Ruddy Daudit</span>
+        <h1>Développeur Java / Spring Boot &amp; Angular</h1>
+        <p class="tagline">Je conçois des applications web fiables, testées et sécurisées, du backend à l'interface.</p>
+        <div class="badges">
+          <span class="avail">Disponible immédiatement</span>
+          <span>Île-de-France</span>
+          <span>Anglais B2/C1</span>
+        </div>
+      </div>
+    </div>
+    <div class="banner-foot">
+      <div class="contact">
+        <span class="mono" id="mail">ruddydaudit@gmail.com</span>
+        <button class="btn-ghost" id="copyMail" type="button">Copier l'adresse</button>
+        <a class="btn-ghost" href="https://www.linkedin.com/in/ruddy-daudit-13246424b/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn-ghost" href="https://github.com/RuddyDaudit" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn-ghost" href="#cv">CV</a>
+      </div>
+      <div class="pitch">
+        <div><span class="label">Ce que je construis</span><p>Microservices Spring Boot, API REST sécurisées, applications Angular, déployées avec Docker et Terraform.</p></div>
+        <div><span class="label">En entreprise</span><p>Outils back-end, SQL sur de gros volumes et monitoring chez Cyanide, en Agile et avec tests unitaires.</p></div>
+        <div><span class="label">Ce qui me distingue</span><p>Rigueur, autonomie, et l'habitude d'expliquer simplement des notions techniques, acquise comme entraîneur de basket.</p></div>
+      </div>
+    </div>
+
+    <div class="home-block">
+      <span class="label">Projets · cliquez pour ouvrir</span>
+      <div class="cards">
+        <a class="pcard a-fin" href="#fincore">
+          <div class="vis v-dark" aria-hidden="true">
+            <div class="mini-flow">
+              <div class="node">transaction<i>:8082</i></div><span class="arr">→</span>
+              <div class="node">validation<i>:8081</i></div><span class="arr">→</span>
+              <div class="node">settlement<i>:8083</i></div>
+            </div>
+            <span class="yr">2025</span>
+          </div>
+          <div class="body">
+            <span class="label acc">Back-end · Cloud native</span>
+            <h3>Cloud-Native FinCore</h3>
+            <p>Transactions bancaires traitées par trois microservices Spring Boot, déployés sur Kubernetes avec Terraform.</p>
+            <div class="tags"><span class="tag">Spring Boot</span><span class="tag">Kubernetes</span><span class="tag">Terraform</span></div>
+            <span class="go">Voir le projet →</span>
+          </div>
+        </a>
+
+        <a class="pcard a-doc" href="#outillage">
+          <div class="vis v-soft" aria-hidden="true">
+            <div class="mini-status"><span class="p on">Brouillon</span><span>→</span><span class="p on">En revue</span><span>→</span><span class="p">Validé</span><span>→</span><span class="p">Publié</span></div>
+          </div>
+          <div class="body">
+            <span class="label acc">Full-stack · API REST</span>
+            <h3>Gestion documentaire d'outillage</h3>
+            <p>Une API Django REST et une interface Angular pour faire valider des documents techniques, avec historique des statuts.</p>
+            <div class="tags"><span class="tag">Angular</span><span class="tag">Django REST</span><span class="tag">PrimeNG</span></div>
+            <span class="go">Voir le projet →</span>
+          </div>
+        </a>
+
+        <a class="pcard a-lib" href="#librairie">
+          <div class="vis v-soft" aria-hidden="true">
+            <div class="spines"><i style="height:80%"></i><i style="height:100%"></i><i style="height:70%"></i><i style="height:92%"></i><i style="height:64%"></i><i style="height:86%"></i><i style="height:76%"></i><i style="height:96%"></i></div>
+            <span class="yr">2025</span>
+          </div>
+          <div class="body">
+            <span class="label acc">Back-end · Web</span>
+            <h3>Gestion de librairie</h3>
+            <p>Une application Spring Boot pour gérer un catalogue de livres : ajout, modification, suppression et suivi des commandes.</p>
+            <div class="tags"><span class="tag">Spring Boot 3</span><span class="tag">JPA</span><span class="tag">Thymeleaf</span></div>
+            <span class="go">Voir le projet →</span>
+          </div>
+        </a>
+
+        <a class="pcard a-chain" href="#blockchain">
+          <div class="vis v-soft" aria-hidden="true">
+            <div class="mini-chain">
+              <div class="b">#1<br><em>6e34…a01d</em></div><span class="l">—</span>
+              <div class="b">#2<br><em>7f7d…4e4f</em></div><span class="l">—</span>
+              <div class="b">#3<br><em>ae25…ae5a</em></div>
+            </div>
+            <span class="yr">2022</span>
+          </div>
+          <div class="body">
+            <span class="label acc">Recherche · Sécurité</span>
+            <h3>La blockchain est-elle sûre ?</h3>
+            <p>Un sujet de recherche de Master 1 : altérer les blocs d'une chaîne en C pour tester sa résistance.</p>
+            <div class="tags"><span class="tag">C</span><span class="tag">SHA-256</span><span class="tag">Recherche</span></div>
+            <span class="go">Voir le projet →</span>
+          </div>
+        </a>
+
+        <a class="pcard a-bomb" href="#bomberman">
+          <div class="vis v-dark" aria-hidden="true">
+<pre class="mini-map">0000000000000000000
+0R  1 2  0 1  3 * 0
+0 0 0<b>@</b>0 0 0 0 0 0 0
+0  2 1  X  2 1  S 0
+0000000000000000000</pre>
+          </div>
+          <div class="body">
+            <span class="label acc">Système · Jeu</span>
+            <h3>Bomberman en terminal</h3>
+            <p>Un jeu à deux joueurs écrit en C, qui tourne dans le terminal. Jouable ici dans le navigateur.</p>
+            <div class="tags"><span class="tag">C</span><span class="tag">termios</span><span class="tag">poll</span></div>
+            <span class="go">Jouer →</span>
+          </div>
+        </a>
+
+        <a class="pcard a-pizza" href="#pizzeria">
+          <div class="vis v-photo">
+            <img src="img/pizza-4-fromages.jpg" alt="Pizza quatre fromages, photo du carrousel du site">
+            <span class="yr">2017</span>
+          </div>
+          <div class="body">
+            <span class="label acc">Full-stack · Web</span>
+            <h3>Pizzeria en ligne</h3>
+            <p>Un site de commande de pizzas avec comptes clients, suivi des commandes et espace d'administration.</p>
+            <div class="tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Bootstrap</span></div>
+            <span class="go">Voir le projet →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="home-block">
+      <h2>Parcours</h2>
+      <div class="cv">
+        <div class="cv-col">
+          <span class="label">Expérience</span>
+          <div class="cv-item"><span class="when">2024</span><div><b>Développeur back-end (alternance) · Cyanide, Nanterre</b><p>Outils d'administration et de métriques pour un studio de jeu vidéo : CRUD des événements communautaires et des quêtes, suivi de KPI de performance, requêtes SQL d'analyse sur de gros volumes, scripts de monitoring.</p></div></div>
+          <div class="cv-item"><span class="when">Projet</span><div><b>Lead dev &amp; chef de projet · Groupe Ynnova</b><p>Conception et développement des sites du groupe en PHP et JavaScript, et pilotage du projet.</p></div></div>
+          <div class="cv-item"><span class="when">2019 – 2020</span><div><b>Développeur full-stack (alternance) · WeCanDev, Villepinte</b><p>Sites WordPress sur mesure en PHP, HTML/CSS et JS : thèmes, fonctionnalités métier, performance et SEO.</p></div></div>
+        </div>
+        <div class="cv-col">
+          <span class="label">Formation</span>
+          <div class="cv-item"><span class="when">2026</span><div><b>POE Développeur logiciel</b><p>NatSystem, Maisons-Alfort · Spring, Angular, Oracle</p></div></div>
+          <div class="cv-item"><span class="when">2024</span><div><b>Master Informatique · Développement de solutions logicielles sûres</b><p>Université Paris 8</p></div></div>
+          <div class="cv-item"><span class="when">2021</span><div><b>Licence Informatique</b><p>Sorbonne Paris</p></div></div>
+          <div class="cv-item"><span class="when">2019</span><div><b>BTS SIO, option SLAM</b><p>Lycée Louise Michel, Bobigny</p></div></div>
+        </div>
+      </div>
+      <div class="skills">
+        <div class="skill"><h3>Back-end</h3><div class="tags"><span class="tag">Java 17/21</span><span class="tag">Spring Boot</span><span class="tag">JPA / Hibernate</span><span class="tag">Spring Security</span><span class="tag">API REST</span><span class="tag">JUnit 5</span><span class="tag">PHP</span><span class="tag">C</span></div></div>
+        <div class="skill"><h3>Front-end & données</h3><div class="tags"><span class="tag">Angular</span><span class="tag">TypeScript</span><span class="tag">RxJS</span><span class="tag">PrimeNG</span><span class="tag">Tailwind</span><span class="tag">PostgreSQL</span><span class="tag">Oracle</span></div></div>
+        <div class="skill"><h3>Cloud & outils</h3><div class="tags"><span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">Terraform</span><span class="tag">Azure</span><span class="tag">Jenkins</span><span class="tag">Git</span><span class="tag">Jira</span><span class="tag">SonarQube</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINCORE ================= -->
+  <section class="view a-fin" id="fincore" data-view="fincore" hidden>
+    <a class="back" href="#home">← Tous les projets</a>
+    <div class="phead">
+      <span class="label acc">Back-end · Cloud native</span>
+      <h1>Cloud-Native FinCore</h1>
+      <p class="lede">Une simulation de système bancaire repensée en architecture distribuée. Le but n'est pas seulement de traiter des transactions, mais de montrer une chaîne complète : code Java, images Docker, orchestration Kubernetes et provisionnement automatisé avec Terraform.</p>
+      <a class="repo" href="https://github.com/RuddyDaudit/Cloud-Native-FinCore" target="_blank" rel="noopener">Voir le code sur GitHub ↗</a>
+    </div>
+    <div class="facts">
+      <div><span class="label">Type</span><span class="v">Projet personnel · 2025</span></div>
+      <div><span class="label">Services</span><span class="v">3 microservices REST</span></div>
+      <div><span class="label">Langage</span><span class="v">Java 17 · Spring Boot</span></div>
+      <div><span class="label">Déploiement</span><span class="v">Kubernetes via Terraform</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Architecture</h2>
+      <p class="sub">Chaque étape du traitement est un service indépendant. Les services se trouvent par leur nom DNS interne au cluster, sans adresse IP codée en dur.</p>
+      <div class="arch">
+        <div class="arch-inner">
+          <div class="client"><span class="box">Client · curl</span><span>POST /api/transaction → NodePort 30082</span></div>
+          <div class="cluster">
+            <span class="cl">cluster Kubernetes (Minikube)</span>
+            <div class="svc-row">
+              <div class="svc" id="s-tx"><span class="n">Transaction</span><span class="m">:8082 · point d'entrée</span><span class="m">orchestre le flux</span></div>
+              <div class="link" id="l1"></div>
+              <div class="svc" id="s-val"><span class="n">Validation</span><span class="m">:8081 · conformité</span><span class="m">règles métier</span></div>
+              <div class="link" id="l2"></div>
+              <div class="svc" id="s-set"><span class="n">Settlement</span><span class="m">:8083 · règlement</span><span class="m">statut final</span></div>
+            </div>
+          </div>
+          <div class="iac"><span>main.tf</span><span>transaction.tf</span><span>validation.tf</span><span>settlement.tf</span><span>→ terraform apply</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Essayer le flux</h2>
+      <p class="sub">Cette simulation reproduit la logique des contrôleurs : le service de validation rejette toute transaction supérieure à 1 000, et seules les transactions validées partent au règlement.</p>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="width:170px"><label for="amount">Montant (amount)</label><input id="amount" type="number" step="0.01" min="0" value="500"></div>
+          <button class="btn" id="send" type="button">Envoyer la transaction</button>
+          <div class="presets" aria-label="Montants d'exemple"><button type="button" data-v="100">100</button><button type="button" data-v="1000">1000</button><button type="button" data-v="2500">2500</button></div>
+        </div>
+        <pre class="code log" id="log" aria-live="polite"><span class="c"># Choisissez un montant puis envoyez la transaction.</span></pre>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Ce que j'ai réalisé</h2>
+      <div class="two">
+        <div class="prose"><ul>
+          <li><strong>Trois microservices Spring Boot</strong> (Transaction, Validation, Settlement) exposant chacun une API REST et un endpoint de santé via Actuator.</li>
+          <li><strong>Communication inter-services</strong> avec <code class="inl">RestTemplate</code> : Transaction appelle la validation, puis le règlement si la transaction est acceptée.</li>
+          <li><strong>Conteneurisation</strong> de chaque service avec son Dockerfile, et un <code class="inl">docker-compose</code> sur un réseau dédié pour tester les échanges.</li>
+        </ul></div>
+        <div class="prose"><ul>
+          <li><strong>Manifestes Kubernetes</strong> : Deployments, Services NodePort et ClusterIP, variables d'environnement injectées dans les pods.</li>
+          <li><strong>Infrastructure as Code</strong> : manifestes YAML traduits en HCL avec le provider Kubernetes de Terraform, pour un déploiement sans intervention manuelle.</li>
+          <li><strong>Résilience</strong> : sondes <em>readiness</em> et <em>liveness</em> pour que Kubernetes redémarre un service défaillant.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Extraits de code</h2>
+      <div class="two">
+        <div style="min-width:0">
+          <div class="codecap">transaction-service · TransactionController.java</div>
+<pre class="code"><span class="k">@PostMapping</span>(<span class="s">"/api/transaction"</span>)
+Transaction create(<span class="k">@RequestBody</span> Transaction t) {
+  RestTemplate rest = <span class="k">new</span> RestTemplate();
+  Transaction v = rest.postForObject(
+      <span class="s">"http://validation-app:8081/api/validation"</span>,
+      t, Transaction.<span class="k">class</span>);
+  <span class="k">if</span> (v != <span class="k">null</span> &amp;&amp; <span class="s">"VALIDATED"</span>.equals(v.getStatus())) {
+    <span class="k">return</span> rest.postForObject(
+        <span class="s">"http://settlement-app:8083/api/settlement"</span>,
+        v, Transaction.<span class="k">class</span>);
+  }
+  <span class="k">return</span> v;
+}</pre>
+        </div>
+        <div style="min-width:0">
+          <div class="codecap">terraform · transaction.tf (extrait)</div>
+<pre class="code"><span class="k">resource</span> <span class="s">"kubernetes_deployment"</span> <span class="s">"transaction_app"</span> {
+  spec {
+    replicas = 1
+    template {
+      spec {
+        container {
+          image = <span class="s">"transaction-service:latest"</span>
+          env {
+            name  = <span class="s">"VALIDATION_SERVICE_URL"</span>
+            value = <span class="s">"http://validation-app:8081"</span>
+          }
+          readiness_probe { tcp_socket { port = 8082 } }
+          liveness_probe  { tcp_socket { port = 8082 } }
+        }
+      }
+    }
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Lancer le projet</h2>
+<pre class="code"><span class="c"># 1. Construire l'image et la charger dans Minikube</span>
+docker build -t validation-service:latest ./validation-service
+minikube image load validation-service:latest
+
+<span class="c"># 2. Provisionner toute l'infrastructure</span>
+cd terraform &amp;&amp; terraform init &amp;&amp; terraform apply -auto-approve
+
+<span class="c"># 3. Tester le flux de bout en bout</span>
+curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
+     -H <span class="s">"Content-Type: application/json"</span> \
+     -d <span class="s">'{"amount": 500.0, "status": "PENDING"}'</span></pre>
+    </div>
+    <div class="next-proj"><a href="#home">← Tous les projets</a><a href="#outillage">Projet suivant : Gestion documentaire →</a></div>
+  </section>
+
+  <!-- ================= OUTILLAGE ================= -->
+  <section class="view a-doc" id="outillage" data-view="outillage" hidden>
+    <a class="back" href="#home">← Tous les projets</a>
+    <div class="phead">
+      <span class="label acc">Full-stack · API REST</span>
+      <h1>Gestion documentaire d'outillage</h1>
+      <p class="lede">Une application pour gérer les documents techniques liés à l'outillage industriel (plans, notices, procédures). Chaque document suit un circuit de validation, et chaque changement de statut est tracé : qui, quand, de quel état vers quel état.</p>
+      <a class="repo" href="https://github.com/RuddyDaudit/Gestion-documentaire-outillage" target="_blank" rel="noopener">Voir le code sur GitHub ↗</a>
+    </div>
+    <div class="facts">
+      <div><span class="label">Type</span><span class="v">Projet personnel</span></div>
+      <div><span class="label">Back-end</span><span class="v">Django REST Framework</span></div>
+      <div><span class="label">Front-end</span><span class="v">Angular · PrimeNG</span></div>
+      <div><span class="label">Sécurité</span><span class="v">Token · rôles</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Essayer le circuit de validation</h2>
+      <p class="sub">Choisissez un utilisateur et faites avancer le document. Comme dans l'API, chaque changement crée une ligne d'historique, et seul un administrateur peut créer un type de document. Les données sont des exemples.</p>
+      <div class="panel">
+        <div class="row">
+          <div class="field" style="width:260px"><label for="wfUser">Connecté en tant que</label>
+            <select id="wfUser">
+              <option value="m.durand|CO">m.durand · Contributeur</option>
+              <option value="s.leroy|VA">s.leroy · Valideur</option>
+              <option value="admin|AD">admin · Administrateur</option>
+            </select>
+          </div>
+        </div>
+        <div class="doc-card">
+          <div class="doc-ico">PDF</div>
+          <div style="min-width:0"><div class="t">Procédure de contrôle · Gabarit OT-214</div><div class="m">Type : Procédure · Auteur : m.durand</div></div>
+          <span class="pill acc" id="wfPill">Brouillon</span>
+        </div>
+        <div class="wf" id="wfSteps"></div>
+        <div class="row" id="wfActions"></div>
+        <pre class="code" id="wfLog" style="min-height:96px"><span class="c"># Les appels à l'API s'afficheront ici.</span></pre>
+        <div>
+          <div class="codecap">HistoriqueStatut</div>
+          <div class="scroll-x"><table class="hist"><thead><tr><th>Date</th><th>Ancien statut</th><th>Nouveau statut</th><th>Modifié par</th></tr></thead><tbody id="wfHist"><tr><td colspan="4" class="note">Aucun changement pour l'instant.</td></tr></tbody></table></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div>
+          <div class="codecap">Types de documents</div>
+          <div class="types" id="typeList"></div>
+        </div>
+        <form class="row" id="typeForm">
+          <div class="field" style="width:220px"><label for="typeName">Nouveau type</label><input id="typeName" type="text" placeholder="ex. Notice" required></div>
+          <button class="btn" type="submit">Créer le type</button>
+        </form>
+        <pre class="code" id="typeLog"><span class="c"># POST /api/types-documents/ : réservé au rôle Administrateur.</span></pre>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Ce que j'ai réalisé</h2>
+      <div class="two">
+        <div class="prose"><ul>
+          <li><strong>Modèle de données Django</strong> : types de documents, documents avec fichier joint, historique des statuts et profils utilisateur à trois rôles (Contributeur, Valideur, Administrateur).</li>
+          <li><strong>API REST</strong> avec Django REST Framework : ViewSets, sérialiseurs imbriqués et une action dédiée <code class="inl">PATCH changer_statut</code> qui enregistre l'historique.</li>
+          <li><strong>Sécurité</strong> : authentification par token, accès refusé aux anonymes par défaut, et une permission personnalisée <code class="inl">EstAdministrateur</code>.</li>
+        </ul></div>
+        <div class="prose"><ul>
+          <li><strong>Front-end Angular</strong> en composants standalone : page de connexion, liste des documents en tableau PrimeNG, style Tailwind.</li>
+          <li><strong>État réactif avec les Signals</strong> : le token est un signal, et la liste se recharge dès qu'il change.</li>
+          <li><strong>Intercepteur HTTP et garde de route</strong> : le token est ajouté à chaque requête, et la page des documents est inaccessible sans connexion.</li>
+          <li><strong>Tests</strong> : contrainte d'unicité, refus sans authentification et création d'un document avec fichier.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Extraits de code</h2>
+      <div class="two">
+        <div style="min-width:0">
+          <div class="codecap">backend · outillage/views.py</div>
+<pre class="code"><span class="k">@action</span>(detail=<span class="k">True</span>, methods=[<span class="s">'patch'</span>])
+<span class="k">def</span> changer_statut(self, request, pk=<span class="k">None</span>):
+    document = self.get_object()
+    ancien_statut = document.statut
+    document.statut = request.data.get(<span class="s">'nouveau_statut'</span>)
+    document.save()
+
+    <span class="k">if</span> ancien_statut != document.statut:
+        HistoriqueStatut.objects.create(
+            document=document,
+            ancien_statut=ancien_statut,
+            nouveau_statut=document.statut,
+            modifie_par=request.user,
+        )
+    <span class="k">return</span> Response({<span class="s">'statut'</span>: document.statut})</pre>
+        </div>
+        <div style="min-width:0">
+          <div class="codecap">frontend · interceptors/auth-interceptor.ts</div>
+<pre class="code"><span class="k">export const</span> authInterceptor: HttpInterceptorFn =
+  (req, next) =&gt; {
+    <span class="k">const</span> token = inject(Auth).token();
+    <span class="k">if</span> (token) {
+      <span class="k">return</span> next(req.clone({
+        setHeaders: {
+          Authorization: <span class="s">`Token ${token}`</span>,
+        },
+      }));
+    }
+    <span class="k">return</span> next(req);
+  };</pre>
+        </div>
+      </div>
+    </div>
+    <div class="next-proj"><a href="#fincore">← Cloud-Native FinCore</a><a href="#librairie">Projet suivant : Gestion de librairie →</a></div>
+  </section>
+
+  <!-- ================= LIBRAIRIE ================= -->
+  <section class="view a-lib" id="librairie" data-view="librairie" hidden>
+    <a class="back" href="#home">← Tous les projets</a>
+    <div class="phead">
+      <span class="label acc">Back-end · Web</span>
+      <h1>Gestion de librairie</h1>
+      <p class="lede">Une application web Spring Boot pour gérer le catalogue d'une librairie. On ajoute, modifie et supprime des livres, on suit leur statut de commande, et la couverture est retrouvée automatiquement à partir du titre.</p>
+      <a class="repo" href="https://github.com/RuddyDaudit/Gestion-Librairie" target="_blank" rel="noopener">Voir le code sur GitHub ↗</a>
+    </div>
+    <div class="facts">
+      <div><span class="label">Type</span><span class="v">Projet personnel · 2025</span></div>
+      <div><span class="label">Framework</span><span class="v">Spring Boot 3.5</span></div>
+      <div><span class="label">Persistance</span><span class="v">JPA · MySQL</span></div>
+      <div><span class="label">Vues</span><span class="v">Thymeleaf · JS</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Essayer le catalogue</h2>
+      <p class="sub">Cette maquette reproduit les actions de la page <code class="inl">/books</code> : ajout, modification et suppression avec confirmation. Les livres affichés sont des exemples, et les modifications restent dans votre navigateur.</p>
+      <div class="panel">
+        <form class="bookform" id="bookForm">
+          <input type="hidden" id="bId">
+          <div class="field span2"><label for="bTitle">Titre</label><input id="bTitle" type="text" required placeholder="ex. Le Petit Prince"></div>
+          <div class="field"><label for="bStatus">Statut de la commande</label><select id="bStatus" required><option value="COMMANDE">Commandé</option><option value="ACHETE">Acheté</option><option value="PAS_COMMANDE">Pas commandé</option></select></div>
+          <div class="field"><label for="bFirst">Prénom de l'auteur</label><input id="bFirst" type="text"></div>
+          <div class="field"><label for="bLast">Nom de l'auteur</label><input id="bLast" type="text"></div>
+          <div class="field"><label for="bDate">Date de sortie</label><input id="bDate" type="date" required></div>
+          <div class="field"><label for="bPrice">Prix (€)</label><input id="bPrice" type="number" step="0.01" min="0" placeholder="19.99"></div>
+          <div class="row" style="grid-column: 1 / -1">
+            <button class="btn" type="submit" id="bSubmit">Ajouter le livre</button>
+            <button class="btn sec" type="button" id="bCancel" hidden>Annuler la modification</button>
+            <span class="note" id="bMsg" aria-live="polite"></span>
+          </div>
+        </form>
+        <div class="scroll-x">
+          <table class="books"><thead><tr><th>Couverture</th><th>Titre</th><th>Auteur</th><th>Sortie</th><th style="text-align:right">Prix</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="bookRows"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Architecture N-Tier</h2>
+      <p class="sub">Le code est découpé en couches, chacune avec une responsabilité claire.</p>
+      <div class="layers">
+        <div class="layer"><b>Contrôleur</b><span>BookController</span><p class="note">Reçoit les formulaires, renvoie la vue Thymeleaf.</p></div>
+        <div class="layer"><b>Service</b><span>BookService</span><p class="note">Distingue création et mise à jour, génère le lien de couverture.</p></div>
+        <div class="layer"><b>Repository</b><span>JpaRepository&lt;Book&gt;</span><p class="note">Accès aux données sans SQL écrit à la main.</p></div>
+        <div class="layer"><b>Modèle</b><span>@Entity Book</span><p class="note">Entités JPA, statut stocké sous forme d'enum.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Ce que j'ai réalisé</h2>
+      <div class="two">
+        <div class="prose"><ul>
+          <li><strong>CRUD complet</strong> sur les livres avec Spring MVC : liste, ajout, modification et suppression, avec redirection après chaque action.</li>
+          <li><strong>Persistance JPA / Hibernate</strong> sur MySQL, avec dates en <code class="inl">LocalDate</code> et statut de commande en enum (<code class="inl">COMMANDE</code>, <code class="inl">ACHETE</code>, <code class="inl">PAS_COMMANDE</code>).</li>
+          <li><strong>Modèle évolutif</strong> : entités Auteur, Catégorie et Client déjà en place pour relier les livres par la suite.</li>
+        </ul></div>
+        <div class="prose"><ul>
+          <li><strong>Couvertures automatiques</strong> : le service construit l'URL de couverture Open Library à partir du titre ; une variante utilise l'API Google Books.</li>
+          <li><strong>Interface dynamique</strong> en JavaScript : fenêtres modales pour l'ajout, la modification et la confirmation de suppression, avec aperçu de la couverture pendant la saisie.</li>
+          <li><strong>Suite prévue</strong> : authentification, relations entre entités et suggestions automatiques.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Extrait de code</h2>
+      <div class="codecap">service · BookService.java</div>
+<pre class="code"><span class="k">public</span> Book saveBook(Book book) {
+  <span class="k">if</span> (book.getIdBook() != <span class="k">null</span> &amp;&amp; bookRepository.existsById(book.getIdBook())) {
+    Book existing = bookRepository.findById(book.getIdBook()).get();
+    existing.setNameBook(book.getNameBook());
+    existing.setPrice(book.getPrice());
+    existing.setOrderStatus(book.getOrderStatus());
+    existing.setImageUrl(genererLienPhoto(book.getNameBook()));
+    <span class="k">return</span> bookRepository.save(existing);     <span class="c">// modification</span>
+  }
+  book.setImageUrl(genererLienPhoto(book.getNameBook()));
+  <span class="k">return</span> bookRepository.save(book);           <span class="c">// création</span>
+}</pre>
+    </div>
+    <div class="next-proj"><a href="#outillage">← Gestion documentaire</a><a href="#blockchain">Projet suivant : Blockchain →</a></div>
+  </section>
+
+  <!-- ================= BLOCKCHAIN ================= -->
+  <section class="view a-chain" id="blockchain" data-view="blockchain" hidden>
+    <a class="back" href="#home">← Tous les projets</a>
+    <div class="phead">
+      <span class="label acc">Recherche · Sécurité · Master 1</span>
+      <h1>La blockchain est-elle le moyen le plus sûr de sécuriser des données ?</h1>
+      <p class="lede">Un sujet de recherche sur les mécanismes de la blockchain et son potentiel comme stockage externalisé. Après un état de l'art, j'ai testé la question par l'expérience : modifier des blocs d'une chaîne écrite en C, puis vérifier si l'altération passe inaperçue.</p>
+      <a class="repo" href="https://github.com/RuddyDaudit/Blockchain_Sujet_De_recherche" target="_blank" rel="noopener">Voir le dépôt et la présentation ↗</a>
+    </div>
+    <div class="facts">
+      <div><span class="label">Type</span><span class="v">Initiation à la recherche</span></div>
+      <div><span class="label">Niveau</span><span class="v">Master 1 · 2022</span></div>
+      <div><span class="label">Langage</span><span class="v">C · SHA-256</span></div>
+      <div><span class="label">Livrables</span><span class="v">Article · soutenance</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Reproduire l'expérience</h2>
+      <p class="sub">Chaque bloc garde l'empreinte SHA-256 du bloc précédent. Modifiez la valeur d'un bloc, comme avec <code class="inl">alterNthBlock</code>, puis lancez la vérification de la chaîne. Les empreintes sont calculées en direct dans votre navigateur.</p>
+      <div class="panel">
+        <div class="chain" id="chain"></div>
+        <div class="row">
+          <button class="btn" type="button" id="cVerify">Vérifier la chaîne</button>
+          <button class="btn sec" type="button" id="cAdd">Ajouter un bloc</button>
+          <button class="btn sec" type="button" id="cReset">Réinitialiser</button>
+        </div>
+        <pre class="code" id="cLog" style="min-height:110px"><span class="c">$ ./a.out
+1)addNewNumber  2)alterNthBlock  3)printAllBlocks  4)verifyChain</span></pre>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Démarche</h2>
+      <div class="two">
+        <div class="prose"><ul>
+          <li><strong>État de l'art</strong> : articles de chercheurs, fonctions de hachage cryptographiques et fonctionnement d'une base de données distribuée en blocs.</li>
+          <li><strong>Étude de code existant</strong> dans plusieurs langages, puis choix d'une implémentation en C qui permet d'inspecter la signature de chaque bloc.</li>
+        </ul></div>
+        <div class="prose"><ul>
+          <li><strong>Expérience</strong> : ajout de blocs, altération du n<sup>e</sup> bloc comme le ferait un utilisateur malveillant, puis vérification de toute la chaîne.</li>
+          <li><strong>Résultat</strong> : la modification d'un bloc casse le lien avec le suivant, et la vérification la détecte immédiatement.</li>
+        </ul></div>
+      </div>
+      <div class="slides">
+        <figure><img src="img/slide-13.jpg" alt="Diapositive : altération d'un bloc, valeur avant et après"><figcaption>Altération du bloc 1 : la valeur change, l'adresse reste la même.</figcaption></figure>
+        <figure><img src="img/slide-14.jpg" alt="Diapositive : vérification de la chaîne, échecs détectés"><figcaption>La vérification signale « Previous Block Verification Failed! » après l'altération.</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Conclusion</h2>
+      <div class="verdict">
+        <div><span class="pill ok">Points forts</span><ul><li>Décentralisation : pas de point unique de défaillance</li><li>Signatures : toute modification est détectable</li><li>Plus besoin de tiers de confiance</li></ul></div>
+        <div><span class="pill bad">Limites</span><ul><li>Consommation d'énergie très élevée</li><li>Sécurité qui dépend du nombre de mineurs</li><li>La confiance se reporte sur le réseau</li></ul></div>
+      </div>
+    </div>
+    <div class="next-proj"><a href="#librairie">← Gestion de librairie</a><a href="#bomberman">Projet suivant : Bomberman →</a></div>
+  </section>
+
+  <!-- ================= BOMBERMAN ================= -->
+  <section class="view a-bomb" id="bomberman" data-view="bomberman" hidden>
+    <a class="back" href="#home">← Tous les projets</a>
+    <div class="phead">
+      <span class="label acc">Système · Jeu · C</span>
+      <h1>Bomberman en terminal</h1>
+      <p class="lede">Un Bomberman à deux joueurs sur le même clavier, écrit en C et affiché directement dans le terminal. Pas de bibliothèque graphique : le terminal passe en mode brut, les touches sont lues avec <code class="inl">poll</code> et la carte est redessinée caractère par caractère.</p>
+      <a class="repo" href="https://github.com/RuddyDaudit/bomberman" target="_blank" rel="noopener">Voir le code sur GitHub ↗</a>
+    </div>
+    <div class="facts">
+      <div><span class="label">Type</span><span class="v">Projet universitaire</span></div>
+      <div><span class="label">Équipe</span><span class="v">Binôme, à parts égales</span></div>
+      <div><span class="label">Langage</span><span class="v">C · appels système</span></div>
+      <div><span class="label">Carte</span><span class="v">10 × 44 caractères</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Jouer</h2>
+      <p class="sub">Une adaptation pour le navigateur qui reprend les règles du code C : murs à points de vie, bonus cachés, rayon d'explosion et deux vies par joueur. Il faut un clavier, pour deux joueurs côte à côte.</p>
+      <div class="row">
+        <div class="modes" role="group" aria-label="Mode de jeu">
+          <button class="btn sec" type="button" data-mode="n" aria-pressed="true">Normal</button>
+          <button class="btn sec" type="button" data-mode="d" aria-pressed="false">Difficile</button>
+        </div>
+        <button class="btn" type="button" id="gRestart">Nouvelle partie</button>
+      </div>
+      <div class="game" id="game" tabindex="0" aria-label="Plateau de jeu Bomberman. Cliquez puis utilisez le clavier.">
+        <pre class="grid" id="grid"></pre>
+        <div class="gstatus"><span id="g1">Le joueur 1 a 2 vies.</span><span id="g2">Le joueur 2 a 2 vies.</span></div>
+        <div class="overlay" id="gOverlay"><div class="in"><b id="gTitle">Cliquez ici pour jouer</b><span id="gText">Joueur 1 : ZQSD + F · Joueur 2 : flèches + M</span></div></div>
+      </div>
+      <div class="keys">
+        <div><b>Joueur 1 · <span style="color:#3E8EDB">R</span></b><span class="note">Déplacement <kbd>Z</kbd> <kbd>Q</kbd> <kbd>S</kbd> <kbd>D</kbd> · Bombe <kbd>F</kbd></span></div>
+        <div><b>Joueur 2 · <span style="color:#D9733F">S</span></b><span class="note">Déplacement <kbd>↑</kbd> <kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd> · Bombe <kbd>M</kbd></span></div>
+      </div>
+      <div class="legend">
+        <span><code>0</code> mur indestructible</span>
+        <span><code>1–5</code> mur, chiffre = points de vie</span>
+        <span><code>*</code> vitesse</span>
+        <span><code>+</code> rayon d'explosion</span>
+        <span><code>@</code> bombe supplémentaire</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Ce que nous avons réalisé</h2>
+      <div class="two">
+        <div class="prose"><ul>
+          <li><strong>Gestion du terminal</strong> : passage en mode non canonique avec <code class="inl">termios</code> pour lire chaque touche sans attendre Entrée, puis restauration à la sortie.</li>
+          <li><strong>Entrées des deux joueurs</strong> surveillées avec <code class="inl">poll()</code>, y compris les séquences d'échappement des flèches.</li>
+          <li><strong>Cartes chargées depuis des fichiers</strong> : murs et bonus lus par appels système <code class="inl">open</code> / <code class="inl">read</code>, avec deux modes et plusieurs niveaux.</li>
+        </ul></div>
+        <div class="prose"><ul>
+          <li><strong>Logique de jeu</strong> : murs à points de vie, bombes à retardement, explosion en croix arrêtée par les murs indestructibles, bonus de vitesse, de rayon et de bombe.</li>
+          <li><strong>Affichage</strong> recalculé à chaque action, avec couleurs ANSI et adaptation à la largeur du terminal via <code class="inl">ioctl</code>.</li>
+          <li><strong>Fin de partie</strong> : victoire, égalité, puis retour au menu de sélection.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Extrait de code</h2>
+      <div class="codecap">carte1.c · passage du terminal en mode brut</div>
+<pre class="code"><span class="k">void</span> change_mode() {
+  <span class="k">static struct</span> termios *save = NULL;
+  <span class="k">if</span> (save == NULL) {               <span class="c">// vers le mode non canonique</span>
+    <span class="k">struct</span> termios *non_can = malloc(<span class="k">sizeof</span>(<span class="k">struct</span> termios));
+    save = malloc(<span class="k">sizeof</span>(<span class="k">struct</span> termios));
+    tcgetattr(0, non_can);
+    tcgetattr(0, save);
+    cfmakeraw(non_can);
+    tcsetattr(1, 0, non_can);
+    free(non_can);
+  } <span class="k">else</span> {                          <span class="c">// retour au mode canonique</span>
+    tcsetattr(1, 0, save);
+    free(save);
+    save = NULL;
+  }
+}</pre>
+    </div>
+    <div class="next-proj"><a href="#blockchain">← Blockchain</a><a href="#pizzeria">Projet suivant : Pizzeria →</a></div>
+  </section>
+
+  <!-- ================= PIZZERIA ================= -->
+  <section class="view a-pizza" id="pizzeria" data-view="pizzeria" hidden>
+    <a class="back" href="#home">← Tous les projets</a>
+    <div class="phead">
+      <span class="label acc">Full-stack · Web · 2017</span>
+      <h1>Pizzeria en ligne</h1>
+      <p class="lede">Le site de « Jenny&amp;Marvin Pizza » : les clients consultent la carte, créent un compte, passent commande et suivent leur livraison. Un administrateur gère les pizzas, les suppléments et l'ensemble des commandes.</p>
+      <a class="repo" href="https://github.com/RuddyDaudit/Pizzeria" target="_blank" rel="noopener">Voir le code sur GitHub ↗</a>
+    </div>
+    <figure class="hero-photo">
+      <img src="img/front.jpg" alt="Photo d'accueil du carrousel du site">
+      <figcaption>Carrousel de la page d'accueil · « Classic. »</figcaption>
+    </figure>
+    <div class="facts">
+      <div><span class="label">Type</span><span class="v">Projet de formation</span></div>
+      <div><span class="label">Année</span><span class="v">2017</span></div>
+      <div><span class="label">Stack</span><span class="v">PHP 7 · MySQL</span></div>
+      <div><span class="label">Interface</span><span class="v">Bootstrap 3</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Fonctionnalités</h2>
+      <p class="sub">Le site distingue trois types de visiteurs. L'accès aux pages est contrôlé par un module d'authentification qui vérifie la session et le rôle stocké en base.</p>
+      <div class="roles">
+        <div class="role"><span class="label">Visiteur</span><h3>Découvrir</h3><ul><li>Page d'accueil avec carrousel</li><li>Horaires d'ouverture</li><li>Inscription et connexion</li></ul></div>
+        <div class="role"><span class="label">Client</span><h3>Commander</h3><ul><li>Consulter les pizzas et leurs prix</li><li>Ajouter des suppléments</li><li>Passer une commande</li><li>Suivre ses commandes et leur statut</li></ul></div>
+        <div class="role"><span class="label">Administrateur</span><h3>Gérer</h3><ul><li>Ajouter, modifier, supprimer des pizzas</li><li>Gérer les suppléments</li><li>Voir toutes les commandes</li></ul></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>La carte</h2>
+      <p class="sub">Les données d'exemple livrées avec la base, gérées depuis l'espace administrateur.</p>
+      <div class="two">
+        <div class="menu"><table><thead><tr><th>Pizza</th><th class="num">Prix</th></tr></thead><tbody>
+          <tr><td>Margherita</td><td class="num">8,50 €</td></tr><tr><td>Regina</td><td class="num">10,50 €</td></tr><tr><td>Napoletana</td><td class="num">11,50 €</td></tr><tr><td>4 stagioni</td><td class="num">11,50 €</td></tr>
+        </tbody></table></div>
+        <div class="menu"><table><thead><tr><th>Supplément</th><th class="num">Prix</th></tr></thead><tbody>
+          <tr><td>Fromage</td><td class="num">0,50 €</td></tr><tr><td>Anchois</td><td class="num">0,75 €</td></tr><tr><td>Jambon</td><td class="num">1,00 €</td></tr><tr><td>Boisson</td><td class="num">2,00 €</td></tr><tr><td>Frites</td><td class="num">2,50 €</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Base de données</h2>
+      <p class="sub">Cinq tables MySQL. Une commande référence un client et une recette ; la table <code class="inl">extras</code> relie une commande à plusieurs suppléments.</p>
+      <div class="erd-wrap"><div class="erd">
+        <div class="tbl"><div class="h">users</div><div class="r">uid <em>PK</em></div><div class="r">nom, prenom</div><div class="r">login</div><div class="r">mdp <em>hash</em></div><div class="r">role <em>user|admin</em></div></div>
+        <div class="tbl"><div class="h">commandes</div><div class="r">cid <em>PK</em></div><div class="r">ref</div><div class="r">uid <em>→ users</em></div><div class="r">rid <em>→ recettes</em></div><div class="r">date</div><div class="r">statut</div></div>
+        <div class="tbl"><div class="h">recettes</div><div class="r">rid <em>PK</em></div><div class="r">nom</div><div class="r">prix</div></div>
+        <div class="tbl"><div class="h">extras</div><div class="r">cid <em>→ commandes</em></div><div class="r">sid <em>→ supplements</em></div></div>
+        <div class="tbl"><div class="h">supplements</div><div class="r">sid <em>PK</em></div><div class="r">nom</div><div class="r">prix</div></div>
+      </div></div>
+      <div class="statuses" aria-label="Cycle de vie d'une commande"><span class="label">Statut d'une commande</span><span class="st">preparation</span><span class="ar">→</span><span class="st">livraison</span><span class="ar">→</span><span class="st">terminee</span></div>
+    </div>
+
+    <div class="block">
+      <h2>Points techniques</h2>
+      <div class="two">
+        <div class="prose"><ul>
+          <li><strong>Accès aux données avec PDO</strong> et requêtes préparées pour les opérations sur la carte et les commandes.</li>
+          <li><strong>Authentification maison</strong> : classes dédiées (<code class="inl">IdentityManager</code>, <code class="inl">SqlTableAuthentication</code>), sessions PHP et mots de passe vérifiés avec <code class="inl">password_verify</code>.</li>
+          <li><strong>Contrôle d'accès par rôle</strong> : chaque page protégée inclut un garde qui redirige vers la connexion si besoin.</li>
+        </ul></div>
+        <div class="prose"><ul>
+          <li><strong>Échappement des sorties</strong> avec <code class="inl">htmlspecialchars</code> dans les listes affichées.</li>
+          <li><strong>Interface responsive</strong> avec Bootstrap 3 : barre de navigation repliable et carrousel d'images.</li>
+          <li><strong>CRUD complet</strong> côté administrateur pour les pizzas et les suppléments.</li>
+        </ul></div>
+      </div>
+      <div class="gallery">
+        <figure><img src="img/pizza-4-fromages.jpg" alt="Pizza quatre fromages"><figcaption>Slide « 4 Fromagi »</figcaption></figure>
+        <figure><img src="img/plat.jpg" alt="Assiette de suppléments"><figcaption>Slide « Suppléments »</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Avec le recul</h2>
+      <div class="retro prose" style="max-width:none">
+        <p>Ce projet date de mes débuts. Si je le reprenais aujourd'hui, je changerais plusieurs choses :</p>
+        <ul>
+          <li>Centraliser la connexion à la base et utiliser des requêtes paramétrées partout, sans exception.</li>
+          <li>Séparer la logique et l'affichage (routeur, contrôleurs, templates) au lieu d'un fichier PHP par action.</li>
+          <li>Ajouter une protection CSRF sur les formulaires et des tests automatisés.</li>
+          <li>Exposer la carte et les commandes via une API REST, comme je le fais désormais avec Spring Boot.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="next-proj"><a href="#bomberman">← Bomberman</a><a href="#fincore">Retour au premier projet : FinCore →</a></div>
+  </section>
+
+  <!-- ================= CV ================= -->
+  <section class="view a-doc" id="cv" data-view="cv" hidden>
+    <div class="cv-actions"><a class="back" href="#home" style="margin:0">← Retour au portfolio</a><a class="btn" href="files/CV_Ruddy_Daudit.pdf" download="CV_Ruddy_Daudit.pdf" style="text-decoration:none">Télécharger le CV (PDF)</a></div>
+<article class="cv-sheet">
+  <header class="cvhead">
+    <figure class="cvphoto"><img src="img/ruddy.jpg" alt="Portrait de Ruddy Daudit"></figure>
+    <div class="cvhead-text">
+      <span class="who">Ruddy Daudit</span>
+      <h1>Développeur Java / Spring Boot &amp; Angular</h1>
+      <p>Je conçois des applications web fiables, testées et sécurisées, du backend à l'interface.</p>
+    </div>
+  </header>
+  <div class="cvbody">
+    <aside class="cvside">
+      <section>
+        <h2>Contact</h2>
+        <ul class="cvlist plain">
+          <li>Bobigny (93), Île-de-France</li>
+          <li class="mono">ruddydaudit@gmail.com</li>
+          <li><a href="https://www.linkedin.com/in/ruddy-daudit-13246424b/" target="_blank" rel="noopener">linkedin.com/in/ruddy-daudit</a></li>
+          <li><a href="https://github.com/RuddyDaudit" target="_blank" rel="noopener">github.com/RuddyDaudit</a></li>
+        </ul>
+        <p class="cvavail">Disponible immédiatement</p>
+      </section>
+      <section>
+        <h2>Compétences</h2>
+        <div class="cvskill"><b>Back-end</b><span>Java 17/21, Spring Boot (Data JPA, Security, Cloud), Hibernate, API REST, JUnit 5 (TDD), PHP 8, C</span></div>
+        <div class="cvskill"><b>Front-end</b><span>Angular 17–21 (Signals, RxJS), TypeScript, PrimeNG, Tailwind, HTML/CSS</span></div>
+        <div class="cvskill"><b>Données</b><span>PostgreSQL, Oracle, MySQL, SQL avancé</span></div>
+        <div class="cvskill"><b>Cloud &amp; DevOps</b><span>Docker, Kubernetes, Terraform, Azure, Jenkins, Bash, Tomcat</span></div>
+        <div class="cvskill"><b>Outils</b><span>Git, Maven, Jira/Confluence, Swagger, SonarQube, Postman, Scrum</span></div>
+      </section>
+      <section>
+        <h2>Langues</h2>
+        <ul class="cvlist plain"><li>Français · langue maternelle</li><li>Anglais · professionnel (B2/C1)</li></ul>
+      </section>
+      <section>
+        <h2>Engagement</h2>
+        <ul class="cvlist plain">
+          <li>Entraîneur de basket : Paris Basket (depuis 2026), CSP19 (2022–2026), AC Bobigny (2015–2020)</li>
+          <li>Échecs, Rubik's cube, comics, jeu vidéo</li>
+        </ul>
+      </section>
+    </aside>
+    <div class="cvmain">
+      <section>
+        <h2>Profil</h2>
+        <p>Formé en alternance et par des projets concrets, je développe des applications Java / Spring Boot et Angular, de l'API à l'interface et jusqu'au déploiement (Docker, Kubernetes, Terraform). Rigoureux et autonome, j'aime expliquer simplement des notions techniques, une habitude prise comme entraîneur de basket.</p>
+      </section>
+      <section>
+        <h2>Expérience</h2>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Développeur back-end (alternance) · Cyanide, Nanterre</b><span>Mars – Oct. 2024</span></div>
+          <ul class="cvlist">
+            <li>Outils d'administration et de métriques : cycle de vie complet (CRUD) des événements communautaires et des quêtes dynamiques.</li>
+            <li>Suivi des KPI de performance (XP/min), automatisation du seeding multijoueur et intégration d'équipes IA en ladder.</li>
+            <li>Requêtes SQL complexes pour l'analyse et l'export de gros volumes de données.</li>
+            <li>Scripts de monitoring pour la disponibilité des outils QA, gestion sécurisée des accès.</li>
+            <li>Méthode Agile, couverture par tests unitaires pour fiabiliser les déploiements.</li>
+          </ul>
+        </div>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Lead dev &amp; chef de projet · Groupe Ynnova</b><span>Projet</span></div>
+          <ul class="cvlist"><li>Développement full-stack des sites du groupe (PHP, JavaScript) et pilotage du projet.</li></ul>
+        </div>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Développeur full-stack (alternance) · WeCanDev, Villepinte</b><span>Janv. 2019 – Janv. 2020</span></div>
+          <ul class="cvlist"><li>Sites WordPress sur mesure (PHP, HTML/CSS, JS) : thèmes, Custom Post Types, ACF, performance, SEO et requêtes SQL de maintenance.</li></ul>
+        </div>
+      </section>
+      <section>
+        <h2>Projets</h2>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Plateforme bancaire cloud native</b><span>Spring Boot · K8s · 2025</span></div>
+          <ul class="cvlist"><li>3 microservices Spring Boot (Transaction, Validation, Règlement) en REST, conteneurisés avec Docker, déployés sur Kubernetes via Terraform.</li></ul>
+        </div>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Gestion documentaire d'outillage</b><span>Angular · Django REST</span></div>
+          <ul class="cvlist"><li>Circuit de validation de documents avec historique des statuts, authentification par token, rôles, Signals et intercepteur HTTP côté Angular.</li></ul>
+        </div>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Gestion de librairie</b><span>Spring Boot · JPA · 2025</span></div>
+          <ul class="cvlist"><li>Application Spring Boot 3 en architecture N-Tier (contrôleur, service, repository), persistance JPA / Hibernate, CRUD complet avec vues Thymeleaf.</li></ul>
+        </div>
+        <div class="cvjob">
+          <div class="cvjob-h"><b>Recherche : la blockchain est-elle sûre ?</b><span>Master 1 · C</span></div>
+          <ul class="cvlist"><li>État de l'art puis expérimentation : altération de blocs d'une chaîne SHA-256 en C et vérification de la détection.</li></ul>
+        </div>
+        <p class="cvmore">Autres : quiz Angular (Signals, RxJS), Bomberman deux joueurs en C (termios, poll), client-serveur Java RMI / Sockets, site de pizzeria en PHP / MySQL.</p>
+      </section>
+      <section>
+        <h2>Formation</h2>
+        <div class="cvedu"><span>2026</span><div><b>POE Développeur logiciel</b> · NatSystem, Maisons-Alfort <em>Spring, Angular, Oracle</em></div></div>
+        <div class="cvedu"><span>2024</span><div><b>Master Informatique</b>, développement de solutions logicielles sûres · Université Paris 8</div></div>
+        <div class="cvedu"><span>2021</span><div><b>Licence Informatique</b> · Sorbonne Paris</div></div>
+        <div class="cvedu"><span>2019</span><div><b>BTS SIO, option SLAM</b> · Lycée Louise Michel, Bobigny</div></div>
+      </section>
+    </div>
+  </div>
+</article>
+  </section>
+
+  <footer class="site">
+    <span>Ruddy Daudit · Développeur Java / Spring Boot &amp; Angular</span>
+    <span class="flinks"><span class="mono">ruddydaudit@gmail.com</span><a href="https://github.com/RuddyDaudit" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/ruddy-daudit-13246424b/" target="_blank" rel="noopener">LinkedIn</a><a href="#cv">CV</a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, reduce ? 0 : ms); }); }
+
+  /* ---------- Routing ---------- */
+  var routes = ["home", "fincore", "outillage", "librairie", "blockchain", "bomberman", "pizzeria", "cv"];
+  function show() {
+    var h = (location.hash || "").replace("#", "");
+    if (routes.indexOf(h) === -1) h = "home";
+    document.querySelectorAll("[data-view]").forEach(function (v) { v.hidden = v.dataset.view !== h; });
+    window.scrollTo(0, 0);
+    if (h !== "bomberman") Game.pause();
+  }
+  window.addEventListener("hashchange", show);
+
+  /* ---------- Copy email ---------- */
+  $("copyMail").addEventListener("click", function () {
+    var cb = this, el = $("mail");
+    function sel() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    try {
+      navigator.clipboard.writeText(el.textContent).then(function () { cb.textContent = "Adresse copiée"; setTimeout(function () { cb.textContent = "Copier l'adresse"; }, 1800); }, sel);
+    } catch (e) { sel(); }
+  });
+
+  /* ---------- FinCore simulator ---------- */
+  (function () {
+    var log = $("log"), btn = $("send"), input = $("amount");
+    var sTx = $("s-tx"), sVal = $("s-val"), sSet = $("s-set"), l1 = $("l1"), l2 = $("l2");
+    function reset() { [sTx, sVal, sSet, l1, l2].forEach(function (e) { e.classList.remove("on", "off"); }); }
+    function line(html) { log.innerHTML += "\n" + html; }
+    function pill(st) { var c = st === "REJECTED" ? "bad" : (st === "PENDING" ? "pend" : "ok"); return '<span class="pill ' + c + '">' + st + "</span>"; }
+    document.querySelectorAll("#fincore .presets button").forEach(function (b) { b.addEventListener("click", function () { input.value = b.dataset.v; }); });
+    btn.addEventListener("click", async function () {
+      var amount = parseFloat(input.value);
+      if (isNaN(amount) || amount < 0) { log.innerHTML = '<span class="c"># Saisissez un montant positif, par exemple 500.</span>'; return; }
+      btn.disabled = true; reset();
+      var tx = { amount: amount, status: "PENDING" };
+      log.innerHTML = '<span class="c">$ curl -X POST /api/transaction -d \'' + esc(JSON.stringify(tx)) + "'</span>";
+      sTx.classList.add("on"); line("transaction-service  reçoit  " + pill("PENDING"));
+      await wait(650); l1.classList.add("on"); sVal.classList.add("on");
+      line("→ POST http://validation-app:8081/api/validation");
+      await wait(650);
+      tx.status = amount > 1000 ? "REJECTED" : "VALIDATED";
+      line("validation-service   " + (amount > 1000 ? "montant &gt; 1000   " : "montant ≤ 1000   ") + pill(tx.status));
+      if (tx.status === "VALIDATED") {
+        await wait(650); l2.classList.add("on"); sSet.classList.add("on");
+        line("→ POST http://settlement-app:8083/api/settlement");
+        await wait(650); tx.status = "SETTLED";
+        line("settlement-service   règlement effectué   " + pill("SETTLED"));
+      } else {
+        sSet.classList.add("off");
+        line('<span class="c"># Transaction rejetée : pas d\'appel au règlement.</span>');
+      }
+      await wait(300);
+      line('\n<span class="c">← 200 OK</span>  ' + esc(JSON.stringify(tx)));
+      btn.disabled = false;
+    });
+  })();
+
+  /* ---------- Outillage workflow ---------- */
+  (function () {
+    var ST = [["BR", "Brouillon"], ["RV", "En revue"], ["VA", "Validé"], ["PU", "Publié"], ["AR", "Archivé"]];
+    var cur = 0, hist = [], types = ["Plan", "Procédure"];
+    function label(code) { for (var i = 0; i < ST.length; i++) if (ST[i][0] === code) return ST[i][1]; return code; }
+    function user() { var v = $("wfUser").value.split("|"); return { name: v[0], role: v[1] }; }
+    function now() { var d = new Date(); return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
+    function render() {
+      $("wfPill").textContent = ST[cur][1];
+      $("wfSteps").innerHTML = ST.map(function (s, i) {
+        return '<div class="wf-step ' + (i < cur ? "done" : i === cur ? "cur" : "") + '">' + s[1] + '<span class="code">' + s[0] + "</span></div>";
+      }).join("");
+      var acts = [];
+      if (cur < ST.length - 1) acts.push('<button class="btn" type="button" data-to="' + (cur + 1) + '">Passer à « ' + ST[cur + 1][1] + " »</button>");
+      if (cur > 0 && cur < 3) acts.push('<button class="btn sec" type="button" data-to="0">Renvoyer en brouillon</button>');
+      if (cur === ST.length - 1) acts.push('<button class="btn sec" type="button" data-to="0">Nouvelle version (brouillon)</button>');
+      $("wfActions").innerHTML = acts.join("");
+      $("wfHist").innerHTML = hist.length ? hist.map(function (h) {
+        return "<tr><td>" + h.date + '</td><td><span class="pill pend">' + h.from + '</span></td><td><span class="pill acc">' + h.to + "</span></td><td>" + esc(h.by) + "</td></tr>";
+      }).join("") : '<tr><td colspan="4" class="note">Aucun changement pour l\'instant.</td></tr>';
+      $("typeList").innerHTML = types.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
+    }
+    $("wfActions").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-to]"); if (!b) return;
+      var to = +b.dataset.to, u = user(), from = ST[cur];
+      cur = to;
+      hist.unshift({ date: now(), from: from[1], to: ST[to][1], by: u.name });
+      $("wfLog").innerHTML = '<span class="c">PATCH /api/documents/12/changer_statut/   Authorization: Token ••••  (' + esc(u.name) + ")</span>\n" +
+        "{ \"nouveau_statut\": \"" + ST[to][0] + "\" }\n" +
+        '<span class="ok">← 200 OK</span>  { "statut": "' + ST[to][0] + '" }\n' +
+        '<span class="c"># HistoriqueStatut créé : ' + from[0] + " → " + ST[to][0] + " par " + esc(u.name) + "</span>";
+      render();
+    });
+    $("typeForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = $("typeName").value.trim(), u = user(); if (!name) return;
+      var head = '<span class="c">POST /api/types-documents/   (' + esc(u.name) + ")</span>\n{ \"nom\": \"" + esc(name) + "\" }\n";
+      if (u.role !== "AD") {
+        $("typeLog").innerHTML = head + '<span class="bad">← 403 Forbidden</span>  { "detail": "Cette action nécessite le rôle Administrateur." }';
+      } else if (types.some(function (t) { return t.toLowerCase() === name.toLowerCase(); })) {
+        $("typeLog").innerHTML = head + '<span class="bad">← 400 Bad Request</span>  { "nom": ["Un objet type document avec ce champ nom existe déjà."] }';
+      } else {
+        types.push(name); $("typeName").value = "";
+        $("typeLog").innerHTML = head + '<span class="ok">← 201 Created</span>  { "id": ' + types.length + ', "nom": "' + esc(name) + '", "description": "" }';
+        render();
+      }
+    });
+    render();
+  })();
+
+  /* ---------- Librairie CRUD ---------- */
+  (function () {
+    var STL = { COMMANDE: ["Commandé", "warn"], ACHETE: ["Acheté", "ok"], PAS_COMMANDE: ["Pas commandé", "pend"] };
+    var palette = ["#8A5A12", "#2D5B8C", "#7A2E3A", "#2F6B4F", "#5B4A8C", "#9C4A1F"];
+    var books = [
+      { id: 1, t: "Les Misérables", f: "Victor", l: "Hugo", d: "1862-04-03", p: 12.9, s: "ACHETE" },
+      { id: 2, t: "L'Étranger", f: "Albert", l: "Camus", d: "1942-05-19", p: 7.5, s: "COMMANDE" },
+      { id: 3, t: "Clean Code", f: "Robert C.", l: "Martin", d: "2008-08-01", p: 39.9, s: "PAS_COMMANDE" },
+      { id: 4, t: "Germinal", f: "Émile", l: "Zola", d: "1885-03-02", p: 6.9, s: "ACHETE" }
+    ];
+    var nextId = 5, confirmId = null;
+    function initials(t) { return t.split(/\s+/).filter(function (w) { return w.length > 2 || /^[A-Z]/.test(w); }).slice(0, 2).map(function (w) { return w.replace(/^L'|^l'/, "")[0]; }).join("").toUpperCase() || t[0].toUpperCase(); }
+    function color(t) { var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) >>> 0; return palette[h % palette.length]; }
+    function fmtDate(d) { if (!d) return "—"; var p = d.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
+    function fmtPrice(p) { return p == null || isNaN(p) ? "—" : p.toFixed(2).replace(".", ",") + " €"; }
+    function render() {
+      $("bookRows").innerHTML = books.map(function (b) {
+        var st = STL[b.s];
+        var acts = confirmId === b.id
+          ? '<span class="note">Supprimer ?</span><button type="button" class="del" data-act="yes" data-id="' + b.id + '">Confirmer</button><button type="button" data-act="no">Annuler</button>'
+          : '<button type="button" data-act="edit" data-id="' + b.id + '">Modifier</button><button type="button" class="del" data-act="del" data-id="' + b.id + '">Supprimer</button>';
+        return '<tr><td><div class="cover" style="background:' + color(b.t) + '">' + esc(initials(b.t)) + "</div></td><td><b>" + esc(b.t) + "</b></td><td>" + esc((b.f + " " + b.l).trim() || "—") + "</td><td>" + fmtDate(b.d) + '</td><td class="num">' + fmtPrice(b.p) + '</td><td><span class="pill ' + st[1] + '">' + st[0] + '</span></td><td><div class="acts">' + acts + "</div></td></tr>";
+      }).join("") || '<tr><td colspan="7" class="note">Aucun livre. Ajoutez-en un avec le formulaire.</td></tr>';
+    }
+    function resetForm() { $("bookForm").reset(); $("bId").value = ""; $("bSubmit").textContent = "Ajouter le livre"; $("bCancel").hidden = true; }
+    $("bookRows").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-act]"); if (!b) return;
+      var id = +b.dataset.id, act = b.dataset.act;
+      if (act === "del") { confirmId = id; }
+      else if (act === "no") { confirmId = null; }
+      else if (act === "yes") { books = books.filter(function (x) { return x.id !== id; }); confirmId = null; $("bMsg").textContent = "Livre supprimé."; }
+      else if (act === "edit") {
+        var bk = books.find(function (x) { return x.id === id; });
+        $("bId").value = bk.id; $("bTitle").value = bk.t; $("bFirst").value = bk.f; $("bLast").value = bk.l; $("bDate").value = bk.d; $("bPrice").value = bk.p; $("bStatus").value = bk.s;
+        $("bSubmit").textContent = "Enregistrer les modifications"; $("bCancel").hidden = false; $("bMsg").textContent = "";
+        $("bTitle").focus();
+      }
+      render();
+    });
+    $("bCancel").addEventListener("click", resetForm);
+    $("bookForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var data = { t: $("bTitle").value.trim(), f: $("bFirst").value.trim(), l: $("bLast").value.trim(), d: $("bDate").value, p: $("bPrice").value === "" ? null : parseFloat($("bPrice").value), s: $("bStatus").value };
+      if (!data.t) return;
+      var id = $("bId").value;
+      if (id) { var bk = books.find(function (x) { return x.id === +id; }); Object.assign(bk, data); $("bMsg").textContent = "Livre modifié."; }
+      else { data.id = nextId++; books.push(data); $("bMsg").textContent = "Livre ajouté."; }
+      resetForm(); render();
+    });
+    render();
+  })();
+
+  /* ---------- Blockchain ---------- */
+  (function () {
+    var blocks = [];
+    var enc = new TextEncoder();
+    async function sha(s) {
+      var buf = await crypto.subtle.digest("SHA-256", enc.encode(s));
+      return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+    }
+    function content(b) { return b.n + "|" + b.data + "|" + b.prev; }
+    async function addBlock(data) {
+      var prev = blocks.length ? await sha(content(blocks[blocks.length - 1])) : "0".repeat(64);
+      blocks.push({ n: blocks.length + 1, data: String(data), prev: prev });
+    }
+    function short(h) { return h.slice(0, 10) + "…" + h.slice(-6); }
+    async function render() {
+      var hashes = [];
+      for (var i = 0; i < blocks.length; i++) hashes.push(await sha(content(blocks[i])));
+      var html = "";
+      blocks.forEach(function (b, i) {
+        var ok = i === 0 || b.prev === hashes[i - 1];
+        if (i > 0) html += '<div class="blk-link ' + (ok ? "" : "bad") + '" aria-hidden="true">' + (ok ? "⟶" : "✕") + "</div>";
+        html += '<div class="blk ' + (ok ? "" : "bad") + '"><div class="hdr"><span>Bloc ' + b.n + "</span>" + (i === 0 ? "<span>genèse</span>" : "") + "</div>" +
+          '<div><label for="bk' + i + '">Donnée</label><input id="bk' + i + '" type="text" value="' + esc(b.data) + '" data-i="' + i + '"></div>' +
+          '<div><label>Empreinte du précédent (stockée)</label><div class="h ' + (ok ? "" : "mis") + '">' + short(b.prev) + "</div></div>" +
+          '<div><label>Empreinte de ce bloc</label><div class="h">' + short(hashes[i]) + "</div></div></div>";
+      });
+      var focused = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.i : null;
+      var pos = focused != null ? document.activeElement.selectionStart : null;
+      $("chain").innerHTML = html;
+      if (focused != null) { var el = $("chain").querySelector('input[data-i="' + focused + '"]'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (e) {} } }
+      return hashes;
+    }
+    async function reset() {
+      blocks = []; for (var v of [7, 3, 11, 4]) await addBlock(v);
+      $("cLog").innerHTML = '<span class="c">$ ./a.out\n1)addNewNumber  2)alterNthBlock  3)printAllBlocks  4)verifyChain</span>';
+      await render();
+    }
+    $("chain").addEventListener("input", async function (e) {
+      var i = e.target.dataset.i; if (i == null) return;
+      var old = blocks[i].data; blocks[i].data = e.target.value;
+      $("cLog").innerHTML = '<span class="c">Choice: 2\nWhich block to alter?: ' + (+i + 1) + "\nEnter the value: " + esc(e.target.value) + "</span>\nBefore: [" + esc(old) + "]   After: [" + esc(e.target.value) + "]";
+      await render();
+    });
+    $("cVerify").addEventListener("click", async function () {
+      var hashes = await render(), out = '<span class="c">Choice: 4</span>', fails = 0;
+      for (var i = 1; i < blocks.length; i++) {
+        var ok = blocks[i].prev === hashes[i - 1]; if (!ok) fails++;
+        out += "\n" + (i + 1) + "  [" + esc(blocks[i].data) + "]  " + short(blocks[i].prev) + "  " + (ok ? '<span class="ok">Previous Block Verified!</span>' : '<span class="bad">Previous Block Verification Failed!</span>');
+      }
+      out += "\n" + (fails ? '<span class="bad"># Altération détectée sur ' + fails + " lien(s).</span>" : '<span class="ok"># Chaîne intègre.</span>');
+      $("cLog").innerHTML = out;
+    });
+    $("cAdd").addEventListener("click", async function () {
+      var v = Math.floor(Math.random() * 20) + 1; await addBlock(v);
+      $("cLog").innerHTML = '<span class="c">Choice: 1\nEnter Number: ' + v + "</span>\nBloc " + blocks.length + " ajouté.";
+      await render();
+    });
+    $("cReset").addEventListener("click", reset);
+    if (window.crypto && crypto.subtle) reset();
+    else $("cLog").textContent = "Ce navigateur ne permet pas de calculer les empreintes SHA-256.";
+  })();
+
+  /* ---------- Bomberman ---------- */
+  var Game = (function () {
+    var H = 10, W = 44, FUSE = 2000, BLAST = 350;
+    var gridEl = $("grid"), wrap = $("game"), overlay = $("gOverlay");
+    var mode = "n", st, loop = null, running = false;
+    function rng(seed) { return function () { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }; }
+    function build() {
+      var r = rng(mode === "n" ? 42 : 1337), walls = [], bonus = [];
+      for (var i = 0; i < H; i++) { walls.push([]); bonus.push([]); for (var j = 0; j < W; j++) {
+        var w = -1, b = " ";
+        if (i === 0 || j === 0 || i === H - 1 || j === W - 1) w = 0;
+        else if (i % 2 === 0 && j % 2 === 0 && i < H - 2) w = 0;
+        else {
+          var safe = (i <= 2 && j <= 2) || (i >= H - 3 && j >= W - 3);
+          if (!safe && r() < (mode === "n" ? 0.42 : 0.6)) {
+            w = 1 + Math.floor(r() * (mode === "n" ? 3 : 5));
+            var q = r(); if (q < 0.06) b = "*"; else if (q < 0.13) b = "+"; else if (q < 0.18) b = "@";
+          }
+        }
+        walls[i].push(w); bonus[i].push(b);
+      } }
+      return { walls: walls, bonus: bonus, x: {},
+        p: [{ c: "R", x: 1, y: 1, vie: 2, fast: false, extra: false, r: 1, last: 0 }, { c: "S", x: H - 2, y: W - 2, vie: 2, fast: false, extra: false, r: 1, last: 0 }],
+        bombs: [], over: false };
+    }
+    function key(x, y) { return x + "," + y; }
+    function render() {
+      var out = "", now = performance.now();
+      for (var i = 0; i < H; i++) {
+        for (var j = 0; j < W; j++) {
+          var ch = " ", cls = "";
+          var p1 = st.p[0], p2 = st.p[1];
+          var bomb = st.bombs.some(function (b) { return b.x === i && b.y === j; });
+          if (p1.x === i && p1.y === j && p1.vie > 0) { ch = "R"; cls = "c-p1"; }
+          else if (p2.x === i && p2.y === j && p2.vie > 0) { ch = "S"; cls = "c-p2"; }
+          else if (bomb) { ch = "@"; cls = "c-bomb"; }
+          else if (st.x[key(i, j)] && st.x[key(i, j)] > now) { ch = "X"; cls = "c-x"; }
+          else if (st.walls[i][j] === 0) { ch = "0"; cls = "c-wall0"; }
+          else if (st.walls[i][j] > 0) { ch = String(st.walls[i][j]); cls = "c-wall"; }
+          else if (st.bonus[i][j] !== " ") { ch = st.bonus[i][j]; cls = "c-bonus"; }
+          out += cls ? '<span class="' + cls + '">' + ch + "</span>" : "<span> </span>";
+        }
+        out += "\n";
+      }
+      gridEl.innerHTML = out;
+      $("g1").textContent = "Le joueur 1 a " + st.p[0].vie + " vie" + (st.p[0].vie > 1 ? "s" : "") + ".";
+      $("g2").textContent = "Le joueur 2 a " + st.p[1].vie + " vie" + (st.p[1].vie > 1 ? "s" : "") + ".";
+    }
+    function explode(b) {
+      var now = performance.now(), hit = [false, false], cells = [[b.x, b.y]];
+      [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) {
+        for (var h = 1; h <= b.rayon; h++) {
+          var x = b.x + d[0] * h, y = b.y + d[1] * h;
+          if (x < 0 || y < 0 || x >= H || y >= W || st.walls[x][y] === 0) break;
+          cells.push([x, y]);
+          if (st.walls[x][y] > 0) { st.walls[x][y]--; if (st.walls[x][y] <= 0) st.walls[x][y] = -1; }
+        }
+      });
+      cells.forEach(function (c) {
+        st.x[key(c[0], c[1])] = now + BLAST;
+        st.p.forEach(function (p, n) { if (!hit[n] && p.x === c[0] && p.y === c[1]) { hit[n] = true; p.vie = Math.max(0, p.vie - 1); } });
+      });
+    }
+    function tick() {
+      var now = performance.now();
+      var due = st.bombs.filter(function (b) { return b.t <= now; });
+      if (due.length) { st.bombs = st.bombs.filter(function (b) { return b.t > now; }); due.forEach(explode); }
+      render();
+      if (!st.over && (st.p[0].vie === 0 || st.p[1].vie === 0)) {
+        st.over = true;
+        var msg = st.p[0].vie === 0 && st.p[1].vie === 0 ? "Égalité !" : st.p[0].vie === 0 ? "Le joueur 1 n'a plus de vie. Bravo au joueur 2 !" : "Le joueur 2 n'a plus de vie. Bravo au joueur 1 !";
+        setTimeout(function () { showOverlay("Partie terminée", msg + " Appuyez sur « Nouvelle partie » pour rejouer."); stop(); }, BLAST);
+      }
+    }
+    function move(n, dx, dy) {
+      var p = st.p[n], o = st.p[1 - n], now = performance.now();
+      if (p.vie <= 0 || now - p.last < (p.fast ? 70 : 140)) return;
+      var x = p.x + dx, y = p.y + dy;
+      if (st.walls[x][y] >= 0) return;
+      if (o.x === x && o.y === y && o.vie > 0) return;
+      p.x = x; p.y = y; p.last = now;
+      var b = st.bonus[x][y];
+      if (b === "*") p.fast = true; else if (b === "+") p.r = 2; else if (b === "@") p.extra = true;
+      st.bonus[x][y] = " ";
+    }
+    function drop(n) {
+      var p = st.p[n]; if (p.vie <= 0) return;
+      var mine = st.bombs.filter(function (b) { return b.owner === n; }).length;
+      if (mine >= (p.extra ? 2 : 1)) return;
+      if (st.bombs.some(function (b) { return b.x === p.x && b.y === p.y; })) return;
+      st.bombs.push({ owner: n, x: p.x, y: p.y, rayon: 2 + p.r, t: performance.now() + FUSE });
+    }
+    var KEYS = { z: [0, -1, 0], w: [0, -1, 0], s: [0, 1, 0], q: [0, 0, -1], a: [0, 0, -1], d: [0, 0, 1], ArrowUp: [1, -1, 0], ArrowDown: [1, 1, 0], ArrowLeft: [1, 0, -1], ArrowRight: [1, 0, 1] };
+    wrap.addEventListener("keydown", function (e) {
+      if (!running) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); start(); } return; }
+      var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (KEYS[k]) { e.preventDefault(); move(KEYS[k][0], KEYS[k][1], KEYS[k][2]); }
+      else if (k === "f") { e.preventDefault(); drop(0); }
+      else if (k === "m") { e.preventDefault(); drop(1); }
+      else if (k === " ") e.preventDefault();
+    });
+    function showOverlay(t, m) { $("gTitle").textContent = t; $("gText").textContent = m; overlay.hidden = false; }
+    function start() {
+      if (st.over) st = build();
+      overlay.hidden = true; running = true; wrap.focus();
+      if (!loop) loop = setInterval(tick, 50);
+    }
+    function stop() { running = false; if (loop) { clearInterval(loop); loop = null; } }
+    function pause() { if (running && !st.over) { stop(); showOverlay("Pause", "Cliquez ici pour reprendre."); } }
+    wrap.addEventListener("click", function () { if (!running) start(); });
+    wrap.addEventListener("blur", function () { setTimeout(function () { if (document.activeElement !== wrap) pause(); }, 0); });
+    $("gRestart").addEventListener("click", function () { stop(); st = build(); render(); start(); });
+    document.querySelectorAll("[data-mode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        mode = b.dataset.mode;
+        document.querySelectorAll("[data-mode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        stop(); st = build(); render(); showOverlay("Mode " + (mode === "n" ? "normal" : "difficile"), "Cliquez ici pour jouer. Joueur 1 : ZQSD + F · Joueur 2 : flèches + M");
+      });
+    });
+    st = build(); render();
+    return { pause: pause };
+  })();
+
+  show();
+})();
+</script>
+
+</body>
+</html>
