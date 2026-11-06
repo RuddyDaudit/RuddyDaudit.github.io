@@ -492,7 +492,7 @@ footer.site { border-top: 1px solid var(--line); padding-block: 26px 40px; displ
           <div class="body">
             <span class="label acc">Full-stack · API REST</span>
             <h3>Gestion documentaire d'outillage</h3>
-            <p>Une API Django REST et une interface Angular pour faire valider des documents techniques, avec historique des statuts.</p>
+            <p>Une API Django REST et une interface Angular pour faire valider des documents techniques, avec droits par rôle et historique des statuts.</p>
             <div class="tags"><span class="tag">Angular</span><span class="tag">Django REST</span><span class="tag">PrimeNG</span></div>
             <span class="go">Voir le projet →</span>
           </div>
@@ -732,7 +732,7 @@ curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
 
     <div class="block">
       <h2>Essayer le circuit de validation</h2>
-      <p class="sub">Choisissez un utilisateur et faites avancer le document. Comme dans l'API, chaque changement crée une ligne d'historique, et seul un administrateur peut créer un type de document. Les données sont des exemples.</p>
+      <p class="sub">Choisissez un utilisateur et changez le statut du document. Comme dans l'API, chaque rôle n'a accès qu'à certains statuts : un contributeur peut seulement soumettre en revue, un valideur peut valider et publier, seul un administrateur peut archiver. Les statuts refusés restent visibles ici pour montrer la réponse de l'API. Les données sont des exemples.</p>
       <div class="panel">
         <div class="row">
           <div class="field" style="width:260px"><label for="wfUser">Connecté en tant que</label>
@@ -750,9 +750,10 @@ curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
         </div>
         <div class="wf" id="wfSteps"></div>
         <div class="row" id="wfActions"></div>
+        <div class="row"><button class="btn sec" type="button" id="wfBypass">Tenter de forcer « Publié » par un PATCH classique</button></div>
         <pre class="code" id="wfLog" style="min-height:96px"><span class="c"># Les appels à l'API s'afficheront ici.</span></pre>
         <div>
-          <div class="codecap">HistoriqueStatut</div>
+          <div class="codecap">GET /api/documents/12/historique/</div>
           <div class="scroll-x"><table class="hist"><thead><tr><th>Date</th><th>Ancien statut</th><th>Nouveau statut</th><th>Modifié par</th></tr></thead><tbody id="wfHist"><tr><td colspan="4" class="note">Aucun changement pour l'instant.</td></tr></tbody></table></div>
         </div>
       </div>
@@ -774,14 +775,17 @@ curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
       <div class="two">
         <div class="prose"><ul>
           <li><strong>Modèle de données Django</strong> : types de documents, documents avec fichier joint, historique des statuts et profils utilisateur à trois rôles (Contributeur, Valideur, Administrateur).</li>
-          <li><strong>API REST</strong> avec Django REST Framework : ViewSets, sérialiseurs imbriqués et une action dédiée <code class="inl">PATCH changer_statut</code> qui enregistre l'historique.</li>
-          <li><strong>Sécurité</strong> : authentification par token, accès refusé aux anonymes par défaut, et une permission personnalisée <code class="inl">EstAdministrateur</code>.</li>
+          <li><strong>API REST</strong> avec Django REST Framework : ViewSets, sérialiseurs imbriqués, une action <code class="inl">PATCH changer_statut</code> qui valide le statut et enregistre l'historique, et deux routes de lecture : <code class="inl">GET historique</code> et <code class="inl">GET me</code> (utilisateur et rôle connectés).</li>
+          <li><strong>Contrôle des transitions par rôle</strong> : une permission <code class="inl">PeutChangerStatut</code> associe à chaque rôle les statuts qu'il peut appliquer, et renvoie 403 sinon.</li>
+          <li><strong>Statut protégé</strong> : le champ est en lecture seule dans le sérialiseur, donc un PATCH classique ne peut pas contourner le circuit de validation.</li>
+          <li><strong>Sécurité</strong> : authentification par token, refus des anonymes, et une permission <code class="inl">EstAdministrateur</code> qui ouvre la lecture des types à tous mais réserve leur écriture aux administrateurs.</li>
         </ul></div>
         <div class="prose"><ul>
-          <li><strong>Front-end Angular</strong> en composants standalone : page de connexion, liste des documents en tableau PrimeNG, style Tailwind.</li>
-          <li><strong>État réactif avec les Signals</strong> : le token est un signal, et la liste se recharge dès qu'il change.</li>
-          <li><strong>Intercepteur HTTP et garde de route</strong> : le token est ajouté à chaque requête, et la page des documents est inaccessible sans connexion.</li>
-          <li><strong>Tests</strong> : contrainte d'unicité, refus sans authentification et création d'un document avec fichier.</li>
+          <li><strong>Front-end Angular</strong> en composants standalone avec PrimeNG et Tailwind : connexion, tableau des documents avec statuts colorés, boutons de statut limités au rôle connecté, historique dans une fenêtre modale.</li>
+          <li><strong>Formulaire de création</strong> réactif (<code class="inl">FormBuilder</code>, validateurs) avec choix du type et envoi du fichier en <code class="inl">FormData</code>.</li>
+          <li><strong>État réactif avec les Signals</strong> : token et rôle sont des signaux, les actions disponibles sont calculées avec <code class="inl">computed</code>, et la session est conservée au rechargement de la page.</li>
+          <li><strong>Intercepteur HTTP et garde de route</strong> : le token est ajouté à chaque requête, sauf la connexion, et une réponse 401 déconnecte automatiquement l'utilisateur.</li>
+          <li><strong>7 tests automatisés</strong> : unicité des types, refus sans authentification, création avec fichier, statut non modifiable par PATCH classique, refus d'une validation par un contributeur, historique enregistré et exposé.</li>
         </ul></div>
       </div>
     </div>
@@ -790,37 +794,44 @@ curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
       <h2>Extraits de code</h2>
       <div class="two">
         <div style="min-width:0">
-          <div class="codecap">backend · outillage/views.py</div>
-<pre class="code"><span class="k">@action</span>(detail=<span class="k">True</span>, methods=[<span class="s">'patch'</span>])
-<span class="k">def</span> changer_statut(self, request, pk=<span class="k">None</span>):
-    document = self.get_object()
-    ancien_statut = document.statut
-    document.statut = request.data.get(<span class="s">'nouveau_statut'</span>)
-    document.save()
+          <div class="codecap">backend · outillage/permissions.py</div>
+<pre class="code">STATUTS_AUTORISES = {
+    Profil.Role.CONTRIBUTEUR: {BROUILLON, EN_REVUE},
+    Profil.Role.VALIDEUR: {BROUILLON, EN_REVUE, VALIDE, PUBLIE},
+    Profil.Role.ADMINISTRATEUR: set(Document.Statut.values),
+}
 
-    <span class="k">if</span> ancien_statut != document.statut:
-        HistoriqueStatut.objects.create(
-            document=document,
-            ancien_statut=ancien_statut,
-            nouveau_statut=document.statut,
-            modifie_par=request.user,
-        )
-    <span class="k">return</span> Response({<span class="s">'statut'</span>: document.statut})</pre>
+<span class="k">class</span> PeutChangerStatut(BasePermission):
+    message = <span class="s">"Votre rôle ne permet pas d'appliquer ce statut."</span>
+
+    <span class="k">def</span> has_permission(self, request, view):
+        <span class="k">if not</span> request.user.is_authenticated:
+            <span class="k">return False</span>
+        <span class="k">if not</span> hasattr(request.user, <span class="s">'profil'</span>):
+            <span class="k">return False</span>
+        nouveau = request.data.get(<span class="s">'nouveau_statut'</span>)
+        permis = STATUTS_AUTORISES.get(request.user.profil.role, set())
+        <span class="k">return</span> nouveau <span class="k">in</span> permis</pre>
         </div>
         <div style="min-width:0">
           <div class="codecap">frontend · interceptors/auth-interceptor.ts</div>
-<pre class="code"><span class="k">export const</span> authInterceptor: HttpInterceptorFn =
-  (req, next) =&gt; {
-    <span class="k">const</span> token = inject(Auth).token();
-    <span class="k">if</span> (token) {
-      <span class="k">return</span> next(req.clone({
-        setHeaders: {
-          Authorization: <span class="s">`Token ${token}`</span>,
-        },
-      }));
-    }
-    <span class="k">return</span> next(req);
-  };</pre>
+<pre class="code"><span class="k">export const</span> authInterceptor: HttpInterceptorFn = (req, next) =&gt; {
+  <span class="k">const</span> auth = inject(Auth);
+  <span class="k">const</span> token = auth.token();
+
+  <span class="c">// Jamais de token vers la route de connexion</span>
+  <span class="k">const</span> envoyer = token &amp;&amp; !req.url.includes(<span class="s">'token-auth'</span>);
+  <span class="k">const</span> requete = envoyer
+    ? req.clone({ setHeaders: { Authorization: <span class="s">`Token ${token}`</span> } })
+    : req;
+
+  <span class="k">return</span> next(requete).pipe(
+    catchError((err: HttpErrorResponse) =&gt; {
+      <span class="k">if</span> (err.status === 401 &amp;&amp; envoyer) auth.deconnexion();
+      <span class="k">return</span> throwError(() =&gt; err);
+    }),
+  );
+};</pre>
         </div>
       </div>
     </div>
@@ -1224,7 +1235,7 @@ curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
         </div>
         <div class="cvjob">
           <div class="cvjob-h"><b>Gestion documentaire d'outillage</b><span>Angular · Django REST</span></div>
-          <ul class="cvlist"><li>Circuit de validation de documents avec historique des statuts, authentification par token, rôles, Signals et intercepteur HTTP côté Angular.</li></ul>
+          <ul class="cvlist"><li>Circuit de validation avec transitions de statut contrôlées par rôle et historique, API sécurisée par token et testée, front Angular (Signals, formulaire d'upload, intercepteur).</li></ul>
         </div>
         <div class="cvjob">
           <div class="cvjob-h"><b>Gestion de librairie</b><span>Spring Boot · JPA · 2025</span></div>
@@ -1321,34 +1332,48 @@ curl -X POST http://&lt;URL_MINIKUBE&gt;/api/transaction \
   (function () {
     var ST = [["BR", "Brouillon"], ["RV", "En revue"], ["VA", "Validé"], ["PU", "Publié"], ["AR", "Archivé"]];
     var cur = 0, hist = [], types = ["Plan", "Procédure"];
-    function label(code) { for (var i = 0; i < ST.length; i++) if (ST[i][0] === code) return ST[i][1]; return code; }
+    var PERMIS = { CO: ["BR", "RV"], VA: ["BR", "RV", "VA", "PU"], AD: ["BR", "RV", "VA", "PU", "AR"] };
+    var SEV = { BR: "pend", RV: "acc", VA: "ok", PU: "warn", AR: "pend" };
     function user() { var v = $("wfUser").value.split("|"); return { name: v[0], role: v[1] }; }
     function now() { var d = new Date(); return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
     function render() {
-      $("wfPill").textContent = ST[cur][1];
+      var pill = $("wfPill"); pill.textContent = ST[cur][1]; pill.className = "pill " + SEV[ST[cur][0]];
       $("wfSteps").innerHTML = ST.map(function (s, i) {
         return '<div class="wf-step ' + (i < cur ? "done" : i === cur ? "cur" : "") + '">' + s[1] + '<span class="code">' + s[0] + "</span></div>";
       }).join("");
-      var acts = [];
-      if (cur < ST.length - 1) acts.push('<button class="btn" type="button" data-to="' + (cur + 1) + '">Passer à « ' + ST[cur + 1][1] + " »</button>");
-      if (cur > 0 && cur < 3) acts.push('<button class="btn sec" type="button" data-to="0">Renvoyer en brouillon</button>');
-      if (cur === ST.length - 1) acts.push('<button class="btn sec" type="button" data-to="0">Nouvelle version (brouillon)</button>');
-      $("wfActions").innerHTML = acts.join("");
+      var permis = PERMIS[user().role];
+      $("wfActions").innerHTML = ST.map(function (s, i) {
+        if (i === cur) return "";
+        var ok = permis.indexOf(s[0]) !== -1;
+        return '<button class="btn ' + (ok ? "" : "sec") + '" type="button" data-to="' + i + '"' + (ok ? "" : ' style="border-style:dashed;opacity:.75" title="Statut non autorisé pour ce rôle"') + ">" + s[1] + (ok ? "" : " · refusé") + "</button>";
+      }).join("");
       $("wfHist").innerHTML = hist.length ? hist.map(function (h) {
-        return "<tr><td>" + h.date + '</td><td><span class="pill pend">' + h.from + '</span></td><td><span class="pill acc">' + h.to + "</span></td><td>" + esc(h.by) + "</td></tr>";
-      }).join("") : '<tr><td colspan="4" class="note">Aucun changement pour l\'instant.</td></tr>';
+        return "<tr><td>" + h.date + '</td><td><span class="pill ' + SEV[h.f] + '">' + h.from + '</span></td><td><span class="pill ' + SEV[h.t] + '">' + h.to + "</span></td><td>" + esc(h.by) + "</td></tr>";
+      }).join("") : '<tr><td colspan="4" class="note">Aucun changement de statut enregistré pour ce document.</td></tr>';
       $("typeList").innerHTML = types.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
     }
+    $("wfUser").addEventListener("change", render);
     $("wfActions").addEventListener("click", function (e) {
       var b = e.target.closest("button[data-to]"); if (!b) return;
       var to = +b.dataset.to, u = user(), from = ST[cur];
+      var head = '<span class="c">PATCH /api/documents/12/changer_statut/   Authorization: Token ••••  (' + esc(u.name) + ")</span>\n" +
+        "{ \"nouveau_statut\": \"" + ST[to][0] + "\" }\n";
+      if (PERMIS[u.role].indexOf(ST[to][0]) === -1) {
+        $("wfLog").innerHTML = head + '<span class="bad">← 403 Forbidden</span>  { "detail": "Votre rôle ne permet pas d\'appliquer ce statut." }\n' +
+          '<span class="c"># Statut inchangé : ' + from[0] + ", aucune ligne d'historique.</span>";
+        return;
+      }
       cur = to;
-      hist.unshift({ date: now(), from: from[1], to: ST[to][1], by: u.name });
-      $("wfLog").innerHTML = '<span class="c">PATCH /api/documents/12/changer_statut/   Authorization: Token ••••  (' + esc(u.name) + ")</span>\n" +
-        "{ \"nouveau_statut\": \"" + ST[to][0] + "\" }\n" +
-        '<span class="ok">← 200 OK</span>  { "statut": "' + ST[to][0] + '" }\n' +
+      hist.unshift({ date: now(), from: from[1], to: ST[to][1], f: from[0], t: ST[to][0], by: u.name });
+      $("wfLog").innerHTML = head + '<span class="ok">← 200 OK</span>  { "statut": "' + ST[to][0] + '" }\n' +
         '<span class="c"># HistoriqueStatut créé : ' + from[0] + " → " + ST[to][0] + " par " + esc(u.name) + "</span>";
       render();
+    });
+    $("wfBypass").addEventListener("click", function () {
+      var u = user();
+      $("wfLog").innerHTML = '<span class="c">PATCH /api/documents/12/   Authorization: Token ••••  (' + esc(u.name) + ")</span>\n" +
+        '{ "statut": "PU" }\n<span class="ok">← 200 OK</span>  { "id": 12, "titre": "Procédure de contrôle · Gabarit OT-214", "statut": "' + ST[cur][0] + '", … }\n' +
+        "<span class=\"c\"># Le champ statut est en lecture seule : la valeur envoyée est ignorée.\n# Seule l'action changer_statut, contrôlée par rôle, peut le modifier.</span>";
     });
     $("typeForm").addEventListener("submit", function (e) {
       e.preventDefault();
